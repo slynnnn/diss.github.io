@@ -1,0 +1,224 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>如何给BuyVM添加存储块？ | 表酱紫 </title>
+<link rel="shortcut icon" href="https://diss.one/favicon.ico?v=1699419513018">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://diss.one/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="如何给BuyVM添加存储块？ | 表酱紫  - Atom Feed" href="https://diss.one/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KL7J9YT996"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KL7J9YT996');
+</script>
+
+
+    <meta name="description" content="前言
+买了BuyVM，一般的用途都是做离线下载用的，往往也会购买一个储存块（当然也可以购买多个），不过，BuyVM的存储块是需要自己挂载的，下面和大家分享一下挂载的方法。
+原作者@冲浪麦浪花郎，也感谢之前热心帮忙解决了kurun硬盘挂载的小..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://diss.one">
+  <img class="avatar" src="https://diss.one/images/avatar.png?v=1699419513018" alt="">
+  </a>
+  <h1 class="site-title">
+    表酱紫 
+  </h1>
+  <p class="site-description">
+    复杂的世界 一个就够了
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="/lnks" class="menu">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              如何给BuyVM添加存储块？
+            </h2>
+            <div class="post-info">
+              <span>
+                10-13-2022
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="前言">前言</h2>
+<p>买了BuyVM，一般的用途都是做离线下载用的，往往也会购买一个储存块（当然也可以购买多个），不过，BuyVM的存储块是需要自己挂载的，下面和大家分享一下挂载的方法。</p>
+<p>原作者@<a href="https://hostloc.com/space-uid-50129.html">冲浪麦浪花郎</a>，也感谢之前热心帮忙解决了kurun硬盘挂载的小问题。</p>
+<h2 id="开始操作">开始操作</h2>
+<p><img src="https://pic.loll.cc/images/2021/07/09/20210709103114.png" alt="img" /></p>
+<p><img src="https://pic.loll.cc/images/2021/07/09/20210709103122.png" alt="img" /></p>
+<p>上图是展示下面操作出现的结果，请参照自己的存储块修改相应数值即可（storage也就是256g**作两遍忘了录屏看下文命令修改即可）</p>
+<h3 id="1罗列分区表检查是否存储卷在内">1、罗列分区表检查是否存储卷在内</h3>
+<pre><code class="language-bash">fdisk -l
+</code></pre>
+<h3 id="2查看数据块编号也可以在邮箱或者bvm客户面板找到">2、查看数据块编号（也可以在邮箱或者BVM客户面板找到）</h3>
+<pre><code class="language-bash">ls /dev/disk/by-id/
+</code></pre>
+<h3 id="3被涂抹橘色就是你的分区卷编号在下面的中文替换成你自己的数值进行格式化">3、被涂抹橘色就是你的分区卷编号（在下面的中文替换成你自己的数值）进行格式化</h3>
+<pre><code class="language-bash">mkfs.ext4 -F /dev/disk/by-id/scsi-0BUYVM_SLAB_VOLUME-这串中文改对应存储卷数值
+</code></pre>
+<h3 id="4创建文件夹-可以是数字英文不要使用中文推荐使用卷的尺寸命名如256g-512g-1024g方便后续文件存放记">4、创建文件夹 可以是数字英文不要使用中文，推荐使用卷的尺寸命名如256g 512g 1024g方便后续文件存放记</h3>
+<pre><code class="language-bash">mkdir /这串中文改成你要命名盘符文件名    #比如/storage256,/storage512,因为可能后续你会挂载很多块硬盘
+</code></pre>
+<h3 id="5挂载这个存储块到你这个vps小鸡上好把给新硬盘装载成电脑盘符">5、挂载这个存储块到你这个vps小鸡上（好把给新硬盘装载成电脑盘符）</h3>
+<pre><code class="language-bash">mount -o discard,defaults /dev/disk/by-id/scsi-0BUYVM_SLAB_VOLUME-这串中文改对应存储卷数值 /这串中文改成你要命名盘符文件名
+</code></pre>
+<h3 id="6设置开机重启自动挂载避免关机后不挂载">6、设置开机/重启自动挂载（避免关机后不挂载）</h3>
+<pre><code class="language-bash">echo '/dev/disk/by-id/scsi-0BUYVM_SLAB_VOLUME-这串中文改对应存储卷数值 /这串中文改成你要命名盘符文件名 ext4 defaults,nofail,discard 0 0' | sudo tee -a /etc/fstab
+</code></pre>
+<h3 id="7列出所有可用块设备的信息">7、列出所有可用块设备的信息</h3>
+<pre><code class="language-bash">lsblk
+</code></pre>
+<img src="https://pic.loll.cc/images/2021/07/09/20210709103906.png" alt="image-20210709103905880" style="zoom: 50%;" />
+<h3 id="8显示磁盘占用情况和对应块根目录">8、显示磁盘占用情况和对应块根目录</h3>
+<pre><code class="language-bash">df -h
+</code></pre>
+<img src="https://pic.loll.cc/images/2021/07/09/20210709103925.png" alt="image-20210709103925334" style="zoom:50%;" />
+<h3 id="9宝塔端查看效果">9、宝塔端查看效果</h3>
+<p>安装宝塔后，可以看到已经成功挂载上了。</p>
+<img src="https://pic.loll.cc/images/2021/07/09/20210709104015.png" alt="image-20210709104014996" style="zoom:50%;" />
+<h2 id="注意">注意</h2>
+<p>宝塔默认是安装到<code>www</code>目录下的。</p>
+<ul>
+<li>
+<p>如果你先安装了宝塔，然后把存储块挂载到<code>/www</code>上，会导致宝塔无法启动；</p>
+</li>
+<li>
+<p>如果先创建了<code>www</code>的文件夹，然后挂载，最后装宝塔，原先的挂载貌似会消失。</p>
+</li>
+</ul>
+<p>所以，还是建议:</p>
+<pre><code class="language-bash">mkdir /这串中文改成你要命名盘符文件名    #比如/storage256,/storage512,因为可能后续你会挂载很多块硬盘
+</code></pre>
+<p>然后挂载到<code>/storage256</code> ,<code>/storage512</code>下面。</p>
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://diss.one/docker-xiang-guan-ming-ling/">
+              <h3 class="post-title">
+                docker相关命令
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://diss.one" target="_blank"> 表酱紫 </a>
+  <a class="rss" href="https://diss.one/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

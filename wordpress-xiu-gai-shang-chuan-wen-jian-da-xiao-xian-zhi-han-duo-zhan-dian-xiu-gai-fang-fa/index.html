@@ -1,0 +1,193 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>WordPress修改上传文件大小限制，含多站点修改方法 | 表酱紫 </title>
+<link rel="shortcut icon" href="https://diss.one/favicon.ico?v=1699419513018">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://diss.one/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="WordPress修改上传文件大小限制，含多站点修改方法 | 表酱紫  - Atom Feed" href="https://diss.one/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KL7J9YT996"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KL7J9YT996');
+</script>
+
+
+    <meta name="description" content="WordPress程序有后台-媒体的功能，这里可以上传图片和视频等文件，通常服务器默认的可以上传的最大文件尺寸是50M，而主机默认的是2M。这个限制很大程度上影响了我们上传一些视频或者压缩文件，所以我们提供了一些解决办法。
+以下修改均已20..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://diss.one">
+  <img class="avatar" src="https://diss.one/images/avatar.png?v=1699419513018" alt="">
+  </a>
+  <h1 class="site-title">
+    表酱紫 
+  </h1>
+  <p class="site-description">
+    复杂的世界 一个就够了
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="/lnks" class="menu">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              WordPress修改上传文件大小限制，含多站点修改方法
+            </h2>
+            <div class="post-info">
+              <span>
+                11-22-2022
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <p>WordPress程序有后台-媒体的功能，这里可以上传图片和视频等文件，通常<a href="https://themebetter.com/tag/22" title="查看更多关于 服务器" target="_blank">服务器</a>默认的可以上传的最大文件尺寸是50M，而<a href="https://themebetter.com/tag/46" title="查看更多关于 主机" target="_blank">主机</a>默认的是2M。这个限制很大程度上影响了我们上传一些视频或者压缩文件，所以我们提供了一些解决办法。</p>
+<p>以下修改均已200M为例，可自行调整大小。</p>
+<hr />
+<h2>WordPress单站点修改上传文件大小限制</h2>
+<p><strong>方法1：修改WordPress根目录下的.htaccess文件，加入以下代码：</strong></p>
+<pre><code>php_value upload_max_filesize 200M
+php_value post_max_size 200M
+php_value max_execution_time 300
+php_value max_input_time 300</code></pre>
+<p><strong>方法2：修改PHP配置（建议的方法）：</strong></p>
+<p>如果有宝塔面板，直接找到软件商店的PHP设置，里面可以调整<a href="https://themebetter.com/tag/61" title="查看更多关于 上传文件" target="_blank">上传文件</a>大小。</p>
+<p>如果没有面板，就先找到php.ini文件，修改其中的以下参数：</p>
+<pre><code>upload_max_filesize = 200M
+post_max_size = 200M
+max_execution_time = 300</code></pre>
+<p>注意：以上修改完毕重启PHP服务即可。</p>
+<hr />
+<h2>WordPress多站点修改上传文件大小限制</h2>
+<p>这个需要修改数据库的一个字段。</p>
+<p>进入数据库管理，找到 <strong>wp_sitemeta</strong> 表，找到 meta_key 为 <strong>fileupload_maxk</strong> 的一行，修改对应的值为 <strong>204800</strong>，直接填写数字，不要带任何单位，默认单位是KB。</p>  
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://diss.one/wordpress-bei-fen-huan-yuan-cha-jian-all-in-one-wp-migration-shi-yong-jiao-cheng/">
+              <h3 class="post-title">
+                WordPress备份还原插件All-in-One WP Migration使用教程
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://diss.one" target="_blank"> 表酱紫 </a>
+  <a class="rss" href="https://diss.one/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

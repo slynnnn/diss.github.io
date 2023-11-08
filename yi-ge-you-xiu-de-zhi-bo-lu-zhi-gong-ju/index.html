@@ -1,0 +1,203 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>一个优秀的直播录制工具 | 表酱紫 </title>
+<link rel="shortcut icon" href="https://diss.one/favicon.ico?v=1699419513018">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://diss.one/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="一个优秀的直播录制工具 | 表酱紫  - Atom Feed" href="https://diss.one/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KL7J9YT996"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KL7J9YT996');
+</script>
+
+
+    <meta name="description" content="一个优秀的直播录制工具之前在gayhub上瞎逛，想找一找有没有能够下载bilibili大会员视频的工具（传cookie进去然后下载的那种），然后意外找到了一个叫做bililive-go的项目，目前支持哔哩哔哩、熊猫、战旗、斗鱼、火猫、龙珠、..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://diss.one">
+  <img class="avatar" src="https://diss.one/images/avatar.png?v=1699419513018" alt="">
+  </a>
+  <h1 class="site-title">
+    表酱紫 
+  </h1>
+  <p class="site-description">
+    复杂的世界 一个就够了
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="/lnks" class="menu">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              一个优秀的直播录制工具
+            </h2>
+            <div class="post-info">
+              <span>
+                01-18-2023
+              </span>
+              <span>
+                5 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <p></script><div class="entry-content l-h-2x" id="md_handsome_origin"><h2>一个优秀的直播录制工具</h2><p>之前在gayhub上瞎逛，想找一找有没有能够下载bilibili大会员视频的工具（传cookie进去然后下载的那种），然后意外找到了一个叫做<span class="external-link"><a class="no-external-link" href="https://github.com/hr3lxphr6j/bililive-go/" target="_blank"><i data-feather="external-link"></i>bililive-go</a></span>的项目，目前支持哔哩哔哩、熊猫、战旗、斗鱼、火猫、龙珠、虎牙、全民、CC、一直播、twitch、OPENREC共12家平台的直播原画录制，是王老菊未来科技的优秀“员工”使用Go语言编写，依赖项仅有ffmpeg</p><h2>简单配置</h2><h3>Linux</h3><ul><li>完善依赖：</li></ul><pre><code class="lang-bash">apt install -y ffmpeg p7zip-full</p>
+<p>yum install -y ffmpeg p7zip</code></pre><p>直接使用现成的包就好</p><ul><li>获取二进制文件<br>以x64平台为例，为了简单起见，解压后我将文件重命名为了bililive-go</li></ul><pre><code class="lang-bash">wget --no-check-certificate https://github.com/hr3lxphr6j/bililive-go/releases/download/0.22.12/bililive-go-linux-amd64.7z<br>
+7z x bililive-go-linux-amd64.7z &amp;&amp; rm -rf config.yml &amp;&amp; mv bililive-go-linux-amd64 bililive-go<br>
+:## config.yml在这里用不上，如果需要进阶使用可以保留并编辑</code></pre><ul><li>使用(建议在Screen中运行或者使用nohup)</li></ul><pre><code class="lang-bash">./bililive-go -i {直播间地址1} -i {直播间地址2} ... -i {直播间地址n} -o {输出目录} -t 5</code></pre><p>-t是检查直播是否开始的间隔，可以适当调大一点；软件可以使用ctrl+c或者kill -2信号停止录制，并且得到一个正常的录播文件</p><h3>Windows</h3><ul><li>首先还是解决ffmpeg的依赖问题，从<span class="external-link"><a class="no-external-link" href="https://ffmpeg.zeranoe.com/builds/" target="_blank"><i data-feather="external-link"></i>官网下载ffmpeg</a></span>，下载最新的稳定release版本即可，并将其解压到某个文件夹；我这里是以前下载的ffmpeg4.1版本，找到解压后目录里的bin文件夹并打开，可以看到ffmpeg.exe的可执行文件，我们要将其所在目录添加到系统环境里，让bililive-go能够正常调用；</li><li>如图所示添加环境变量<br>&lt;img src=&quot;https://p.sda1.dev/0/99a3337373b0eb25d1813ae9a3cfb8ac/167276453.png&quot; alt=&quot;添加环境变量&quot; title=&quot;添加环境变量&quot;style=&quot;&quot;&gt;<br>如果一切正常，添加完成后在cmd中运行ffmpeg -version应该有类似下面的输出<br>&lt;img src=&quot;https://p.sda1.dev/0/29c035ca6c0ac8c42f305b6f638872be/1050238664.png&quot; alt=&quot;检查ffmpeg&quot; title=&quot;检查ffmpeg&quot;style=&quot;&quot;&gt;</li><li>下载解压bililive-go，这里我同样将bililive-go-windows-amd64.exe重命名为了bililive-go.exe；并将文件复制到ffmpeg的bin目录内</li><li>win+R组合键打开cmd</li><li>类似之前的格式运行bililive-go<br>&lt;img src=&quot;https://p.sda1.dev/0/ac86de1844519cfc8cb5d6ca71e265c8/264618499.png&quot; alt=&quot;运行&quot; title=&quot;运行&quot;style=&quot;&quot;&gt;</li></ul><h2>Linux下进阶使用(为什么没有win呢</h2><p>作者在<span class="external-link"><a class="no-external-link" href="https://github.com/hr3lxphr6j/bililive-go/blob/master/docs/API.md" target="_blank"><i data-feather="external-link"></i>https://github.com/hr3lxphr6j/bililive-go/blob/master/docs/API.md</a></span> 中提供了非常完善的web控制API，并且连如何注册成服务都<span class="external-link"><a class="no-external-link" href="https://github.com/hr3lxphr6j/bililive-go/wiki/Install-Linux" target="_blank"><i data-feather="external-link"></i>甩到你脸上了</a></span>，接下来我们就尝试将bililive-go注册成系统服务，并且通过外部脚本进行管理。<br>在简单配置的基础上，将二进制文件移动到/usr/bin目录下（匹配原作者给的服务文件写法）</p><pre><code class="lang-bash">mv bililive-go /usr/bin/<br>
+mkdir -p /etc/bililive-go/<br>
+echo &quot;rpc:<br>
+enable: true<br>
+port: 127.0.0.1:6161<br>
+token: &quot;填入你的token&quot;<br>
+tls:<br>
+enable: false<br>
+cert_file: &quot;&quot;<br>
+key_file: &quot;&quot;<br>
+debug: false<br>
+interval: 5<br>
+out_put_path: /Record<br>
+&quot; &gt; /etc/bililive-go/config.yml<br>
+echo &quot;[Unit]<br>
+Description=Live Stream Saver<br>
+Wants=network-online.target<br>
+After=network-online.target</p>
+<p>[Service]<br>
+Type=simple<br>
+ExecStart=/usr/bin/bililive-go -c /etc/bililive-go/config.yml<br>
+Restart=on-failure</p>
+<p>[Install]<br>
+WantedBy=multi-user.target&quot; &gt; /etc/systemd/system/bililive-go.service<br>
+systemctl daemon-reload<br>
+systemctl enable bililive-go.service<br>
+systemctl start bililive-go.service</code></pre><p>正常情况下，netstat -tunlp | grep bililive-go命令将输出：<br>&lt;img src=&quot;https://p.sda1.dev/0/8a35b51a9013b86bb54f0e3af66dbf00/2649736520.png&quot; alt=&quot;Linux0.png&quot; title=&quot;Linux0.png&quot;style=&quot;&quot;&gt;<br>我们希望这个服务可以远程调用，因此使用nginx进行一下反代……反代过程略<br>写了一个Python的简易控制程序……<span class="external-link"><a class="no-external-link" href="https://github.com/capric98/Bililive-go-Python-Client" target="_blank"><i data-feather="external-link"></i>点击这里查看</a></span></p></div></p>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://diss.one/buyvm-pei-zhi-zhi-nan/">
+              <h3 class="post-title">
+                Buyvm增加存储块及配置指南
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://diss.one" target="_blank"> 表酱紫 </a>
+  <a class="rss" href="https://diss.one/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

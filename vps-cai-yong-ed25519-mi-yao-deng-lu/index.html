@@ -1,0 +1,253 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VPS采用Ed25519密钥登录 | 表酱紫 </title>
+<link rel="shortcut icon" href="https://diss.one/favicon.ico?v=1699419513018">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://diss.one/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="VPS采用Ed25519密钥登录 | 表酱紫  - Atom Feed" href="https://diss.one/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KL7J9YT996"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KL7J9YT996');
+</script>
+
+
+    <meta name="description" content="一次Termius升级闪退的Bug引发了对密钥的讨论。无可非议，大佬就是大佬，仅仅提ed25519几个字就够了。
+本文源自：https://github.com/nkypy/blog/issues/17
+正文前先对比一下：
+3072的RSA..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://diss.one">
+  <img class="avatar" src="https://diss.one/images/avatar.png?v=1699419513018" alt="">
+  </a>
+  <h1 class="site-title">
+    表酱紫 
+  </h1>
+  <p class="site-description">
+    复杂的世界 一个就够了
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="/lnks" class="menu">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              VPS采用Ed25519密钥登录
+            </h2>
+            <div class="post-info">
+              <span>
+                01-17-2023
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <p>一次Termius升级闪退的Bug引发了对密钥的讨论。无可非议，大佬就是大佬，仅仅提ed25519几个字就够了。</p>
+<p>本文源自：<code>https://github.com/nkypy/blog/issues/17</code><br>
+正文前先对比一下：<br>
+3072的RSA的安全性=256的ECC(包括ECDSA和25519(EdDSA))<br>
+25519相对于传统NIST P-256曲线的ECDSA效率与速度更快且为确定性签名。<br>
+#一、本地配置<br>
+##1.1 在Windows PowerShell中运行命令<br>
+ssh-keygen -t ed25519 -C &quot;oracledubai&quot;   #随便起个名称，本例以oracledubai为例。<br>
+显示</p>
+<pre><code>Generating public/private ed25519 key pair.
+Enter file in which to save the key (/home/lenovo/.ssh/id_ed25519): #文件保存位置,一般默认即可。
+</code></pre>
+<p>显示</p>
+<pre><code>Enter passphrase (empty for no passphrase): #对密钥加个私人密码，输入密码或回车留空。
+Enter same passphrase again:# 确认密码或回车。
+</code></pre>
+<p>显示</p>
+<pre><code>Your identification has been saved in /home/lenovo/.ssh/id_ed25519 #生成的私钥
+Your public key has been saved in /home/lenovo/.ssh/id_ed25519.pub #生成的公钥
+The key fingerprint is:
+SHA256:PdwszW0JXELbXMuQXDGN+xfKfCMd6YQWEB4 oracledubai #指纹
+The key's randomart image is:
++--[ED25519 256]--+
+|  Eo.+ . .o ..ooo|
+| . .= = .  + . +=|
+| ..= = o  o o . o|
+|o = o o  o B = . |
+|o+ +    S = B +  |
+|oo+        o .   |
+|=  o             |
+|..o              |
+|..               |
++----[SHA256]-----+
+</code></pre>
+<p><strong>说明</strong><br>
+#####1. <code>id_ed25519</code>是私钥，<code>id_ed25519.pub</code>是公钥。<br>
+#####2. 保存在<code>C:\Users\lenovo\.ssh</code>路径中。<code>lenovo</code>为计算机名，不知道是啥的看上面路径home后面的名称。</p>
+<p>#二、VPS端操作<br>
+##2.1 以root登录vps<br>
+mkdir /root/.ssh/<br>
+##2.2 上传公钥<br>
+将<code>id_ed25519.pub</code>上传到<code>/root/.ssh/</code>路径下，并运行</p>
+<pre><code>cat /root/.ssh/id_ed25519.pub &gt;&gt;  /root/.ssh/authorized_keys
+</code></pre>
+<p>##2.3 修改密钥项<br>
+vim /etc/ssh/sshd_config<br>
+将下列两行的井号去掉<br>
+#PubkeyAuthentication yes    #允许密钥认证<br>
+#AuthorizedKeysFile	.ssh/authorized_keys .ssh/authorized_keys2    #默认公钥位置<br>
+service sshd restart #重启sshd<br>
+##2.4 以密钥方式重新登录</p>
+<h3 id="注意以密钥方式重新登录"><strong>注意：以密钥方式重新登录</strong></h3>
+<p>##2.5 关闭密码登录<br>
+#####运行的前提是：能够密钥登录VPS</p>
+<pre><code>vim /etc/ssh/sshd_config
+将后面的PasswordAuthentication yes
+修改为：PasswordAuthentication no
+service sshd restart #重启sshd
+</code></pre>
+<p>#三、常见的几种密钥生成方式对比<br>
+**DSA: **它是不安全的，甚至从OpenSSH第7版开始就不再支持，你需要升级它!<br>
+**RSA: **这取决于密钥大小。如果它有3072或4096位的长度，那么你就很好。低于这个长度，你可能要升级它。1024位的长度甚至被认为是不安全的。<br>
+**ECDSA：**这取决于你的机器能产生一个随机数的程度，这个随机数将被用来创建签名。在ECDSA使用的NIST曲线上也有一个可信度问题。</p>
+<p><strong>BTW</strong><br>
+<em><strong>Ed25519: 这是目前最值得推荐的公钥算法!</strong></em><br>
+</textarea></div>        </div></p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E6%B3%A8%E6%84%8F%E4%BB%A5%E5%AF%86%E9%92%A5%E6%96%B9%E5%BC%8F%E9%87%8D%E6%96%B0%E7%99%BB%E5%BD%95"><strong>注意：以密钥方式重新登录</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://diss.one/typora-ji-huo/">
+              <h3 class="post-title">
+                Typora激活
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://diss.one" target="_blank"> 表酱紫 </a>
+  <a class="rss" href="https://diss.one/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

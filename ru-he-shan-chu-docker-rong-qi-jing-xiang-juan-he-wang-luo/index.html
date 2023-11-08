@@ -1,0 +1,192 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>如何删除Docker容器，镜像，卷和网络 | 表酱紫 </title>
+<link rel="shortcut icon" href="https://diss.one/favicon.ico?v=1699419513018">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://diss.one/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="如何删除Docker容器，镜像，卷和网络 | 表酱紫  - Atom Feed" href="https://diss.one/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KL7J9YT996"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KL7J9YT996');
+</script>
+
+
+    <meta name="description" content="Docker允许您将应用程序构建为可移植，自给自足的容器，可以在任何地方运行，从而快速构建，测试和部署应用程序。Docker默认不会删除未使用的对象，例如容器，图像，卷和网络。在使用Docker时，您可以轻松地积累大量未使用的对象。这些对象..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://diss.one">
+  <img class="avatar" src="https://diss.one/images/avatar.png?v=1699419513018" alt="">
+  </a>
+  <h1 class="site-title">
+    表酱紫 
+  </h1>
+  <p class="site-description">
+    复杂的世界 一个就够了
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="/lnks" class="menu">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              如何删除Docker容器，镜像，卷和网络
+            </h2>
+            <div class="post-info">
+              <span>
+                01-16-2023
+              </span>
+              <span>
+                7 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <p>Docker允许您将应用程序构建为可移植，自给自足的容器，可以在任何地方运行，从而快速构建，测试和部署应用程序。</p><p>Docker默认不会删除未使用的对象，例如容器，图像，卷和网络。在使用Docker时，您可以轻松地积累大量未使用的对象。</p><p>这些对象会占用大量磁盘空间，并使Docker命令产生的输出混乱。你可使用命令<code>docker system prune</code>删除所有已停止的容器，未使用的镜像和未使用的网络。</p><p>Docker会提示您是否继续<code>Are you sure you want to continue? [y/N]</code>，如果不需要提示，可使用<code>-f</code>或<code>--force</code>选项绕过提示。</p><p>如果你只是想仅删除所有未使用的卷，可增加<code>--volumes</code>选项。命令<code>docker system prune --volumes</code>将仅清除卷。</p><h2 id="-docker-">删除Docker容器</h2><p>停止使用Docker容器时，不会自动删除它们，除非使用<code>--rm</code>选项启动容器，例如<code>docker --rm -itd run hello-world</code>。</p><p>要删除一个或多个Docker容器，请使用<code>docker container rm</code>命令，后跟要删除的容器的ID。</p><p>你可以通过将<code>-a</code>选项传递给<code>docker container ls</code>命令来获得所有活动容器和非活动容器的列表，<code>docker container ls -a</code>。</p><p>知道要删除的容器的<code>CONTAINER ID</code>后，请将其传递给<code>docker container rm</code>命令。例如，要删除上面输出中列出的前两个容器，可运行命令<code>docker container rm cc3f2ff51cab cd20b396a061</code>：</p><p>如果收到与类似于<code>Error response from daemon: You cannot remove a running container，Stop the container before attempting removal or force remove.</code>的错误。</p><p>则表明要删除的容器正在运行。您需要先停止容器，然后再将其移除。</p><p>在执行删除命令之前，您可以使用命令<code>docker container ls -a --filter status=exited --filter status=created</code>命令获取将要删除已停止的容器列表。</p><p>你可以直接使用<code>docker container prune</code>命令删除所有已停止的容器。系统会提示您继续，如果不需要提示，使用<code>-f</code>或​​<code>--force</code>选项绕过提示。</p><p><code>docker container prune</code>命令还允许您使用过滤选项<code>--filter</code>根据条件删除容器。在撰写本文时，当前<a href="https://docs.docker.com/engine/reference/commandline/container_prune">支持的过滤器</a>为<code>until</code>和<code>label</code>。</p><p>您可以通过使用多个<code>--filter</code>选项来使用多个过滤器。例如，要删除所有在12个小时前创建的镜像，请运行以下命令：</p><pre><code class="language-bash">docker container prune --filter "until=12h"</code></pre><h2 id="-">停止所有容器</h2><p>您可以使用<code>docker container ls -aq</code>命令获取系统上所有Docker容器的列表。</p><p>要停止所有正在运行的容器，请使用<code>docker container stop</code>命令，后跟所有容器ID的列表。例如命令<code>docker container stop $(docker container ls -aq)</code>将会停止所有容器</p><p>一旦所有容器都停止，您可以使用<code>docker container rm</code>命令，然后再加上容器ID列表来删除它们。</p><pre><code class="language-bash">docker container rm $(docker container ls -aq)</code></pre><h2 id="--1">删除镜像</h2><p>要删除一个或多个Docker镜像，请使用<code>docker images ls</code>命令找到要删除的映像的ID。</p><p>找到要删除的镜像后，请将镜像id传递到<code>docker image rm</code>命令。例如，你要删除两个镜像，请运行命令<code>docker image rm 75835a67d134 2a4cca5ac898</code>。</p><p>如果收到类似Error response from daemon: conflict: unable to remove repository reference，using its referenced image的错误，则表示现有容器正在使用该镜像。要删除图像，您必须先删除容器。</p><p>Docker提供了<code>docker image prune</code>命令，可用于删除未使用的镜像。删除未被任何容器使用的镜像。即未使用的镜像。</p><p>系统会提示您是否继续，如果不需要这个提示，可使用<code>-f</code>或<code>--force</code>选项绕过提示。</p><p><code>docker image prune -a</code>命令还允许你要删除未关联容器的镜像，而不仅仅是已挂起的容器。<code>docker</code>会提示您是否继续，如果不需要提示，使用<code>-f</code>或​​<code>--force</code>选项绕过提示。</p><p>除此之外<code>docker image prune</code>命令，还允许你使用过滤标志<code>--filter</code>根据特定条件删除镜像。</p><p>在撰写本文时，当前<a href="https://docs.docker.com/engine/reference/commandline/image_prune/#examples">支持的过滤器</a>为<code>until</code>和<code>label</code>。您可以使用多个<code>--filter</code>标志来使用多个过滤器。</p><p>例如，要删除12个小时前创建的镜像，您可以运行：</p><pre><code class="language-bash">docker image prune -a --filter "until=12h"</code></pre><h2 id="-docker--1">删除Docker卷</h2><p>要删除一个或多个Docker卷，请使用<code>docker volume ls</code>命令查找要删除的卷的ID。</p><p>找到要删除的卷的<code>VOLUME NAME</code>后，将其传递给<code>docker volume rm</code>命令。例如，要删除卷id是4e12af8913af888ba67243dec78419bf18，你可运行命令<code>docker volume rm 4e12af8913af888ba67243dec78419bf18</code>。</p><p>如果收到类似于Error response from daemon: remove volume is in use的错误，则表示现有容器正在使用该卷。要删除该卷，您必须先删除该容器。</p><p>如果你需要删除所有未使用的卷，请使用<code>docker image prune</code>命令。系统会提示您是否继续Are you sure you want to continue? [y/N]，如果不需要提示使用<code>-f</code>或<code>--force</code>标志绕过提示。</p><h2 id="-docker--2">删除Docker网络</h2><p>要删除一个或多个Docker网络，请使用<code>docker network ls</code>命令查找您要删除的网络的ID。</p><p>找到要删除的网络后，请将<code>NETWORK ID</code>网络id传递给<code>docker network rm</code>命令。例如，要删除名称为<code>my-bridge-network</code>的网络，请运行命令<code>docker network rm c520032c3d31</code>。</p><p>如果收到类似Error response from daemon, has active endpoints的错误，则表示现有容器正在使用该网络。要删除网络，您必须先删除容器。</p><p>你可使用<code>docker network prune</code>命令删除所有未使用的网络。系统会提示您是否继续，如果不需要提示请使用<code>-f</code>或<code>--force</code>选项绕过提示。</p><pre><code>WARNING! This will remove all networks not used by at least one container.
+Are you sure you want to continue? [y/N] </code></pre><p><code>docker network prune</code>命令还允许您使用过滤标记<code>--filter</code>选项根据条件删除网络。</p><p>在撰写本文时，目前<a href="https://docs.docker.com/engine/reference/commandline/network_prune/">个受支持的过滤器</a>为<code>until</code>和<code>label</code>。您可以通过使用多个<code>--filter</code>标志来使用多个过滤器。</p><p>例如，要删除在12个小时前创建的所有网络，请运行：</p><pre><code class="language-bash">docker network prune -a --filter "until=12h"</code></pre><h2 id="--2">结论</h2><p>在本指南中，我们向您展示了一些用于删除Docker容器，镜像，卷和网络的常用命令。您还应该查看<a href="https://docs.docker.com/"> Docker官方文档</a>。如有任何疑问，请在下面发表评论。</p>
+<p>·</p>
+<p>·</p>
+<p>·</p>
+<p>Docker重启所有命令以及构建是如何设置开机重启</p>
+<a id="more"></a>
+<p>设置开机重启</p>
+<pre><code class="language-bash">--restart=always</code></pre>
+<p>启动所有容器</p>
+<pre><code class="language-bash">docker start $(docker ps -a | awk '{ print $1}' | tail -n +2)</code></pre>
+<p>关闭所有容器</p>
+<pre><code class="language-bash">docker stop $(docker ps -a | awk '{ print $1}' | tail -n +2)</code></pre>
+<p>删除所有容器</p>
+<pre><code class="language-bash">docker rm $(docker ps -a | awk '{ print $1}' | tail -n +2)</code></pre>
+<p>删除所有镜像</p>
+<pre><code class="language-bash">docker rmi $(docker p_w_picpaths | awk '{print $3}' |tail -n +2)</code></pre>
+<p>重启所有容器</p>
+<pre><code class="language-bash">docker restart $(docker ps -a | awk '{ print $1}' | tail -n +2)</code></pre>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://diss.one/bu-shu-zi-ji-de-si-ren-mi-ma-guan-li-xi-tong-bitwarden/">
+              <h3 class="post-title">
+                部署自己的私人密码管理系统-Bitwarden
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://diss.one" target="_blank"> 表酱紫 </a>
+  <a class="rss" href="https://diss.one/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

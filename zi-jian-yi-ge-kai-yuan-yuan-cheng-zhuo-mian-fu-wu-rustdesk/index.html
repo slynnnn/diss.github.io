@@ -1,0 +1,435 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>自建一个开源远程桌面服务——RustDesk | 表酱紫 </title>
+<link rel="shortcut icon" href="https://diss.one/favicon.ico?v=1699419513018">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://diss.one/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="自建一个开源远程桌面服务——RustDesk | 表酱紫  - Atom Feed" href="https://diss.one/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KL7J9YT996"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KL7J9YT996');
+</script>
+
+
+    <meta name="description" content="前言
+最近不知怎么，经常需要帮朋友远程，远程工具一般都是用向日葵，不过似乎现在需要登陆才能使用。
+
+总感觉不是很爽。
+今天就来推荐一款向日葵的开源替代品——Rust desk
+
+1. 介绍
+一个非常好用的远程桌面软件。
+
+1.1 特点
+咕咕..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://diss.one">
+  <img class="avatar" src="https://diss.one/images/avatar.png?v=1699419513018" alt="">
+  </a>
+  <h1 class="site-title">
+    表酱紫 
+  </h1>
+  <p class="site-description">
+    复杂的世界 一个就够了
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="/lnks" class="menu">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              自建一个开源远程桌面服务——RustDesk
+            </h2>
+            <div class="post-info">
+              <span>
+                12-19-2022
+              </span>
+              <span>
+                9 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="%E5%89%8D%E8%A8%80" tabindex="-1">前言</h2>
+<p>最近不知怎么，经常需要帮朋友远程，远程工具一般都是用向日葵，不过似乎现在需要登陆才能使用。</p>
+<p><img src="https://img.laoda.de/i/2022/07/02/c2s1sz-2.webp" alt="image-20220702073022862" /></p>
+<p>总感觉不是很爽。</p>
+<p>今天就来推荐一款向日葵的开源替代品——Rust desk</p>
+<p><img src="https://img.laoda.de/i/2022/07/02/c4p1ng-2.svg" alt="RustDesk - Your remote desktop" /></p>
+<h2 id="1.-%E4%BB%8B%E7%BB%8D" tabindex="-1">1. 介绍</h2>
+<p>一个非常好用的远程桌面软件。</p>
+<p><img src="https://img.laoda.de/i/2022/07/02/c539lo-2.webp" alt="image" /></p>
+<h3 id="1.1-%E7%89%B9%E7%82%B9" tabindex="-1">1.1 特点</h3>
+<p>咕咕这边简单在网上<s>抄</s>搜集了一些特点，供大家参考：</p>
+<ul>
+<li>
+<p>用Rust编写</p>
+</li>
+<li>
+<p>开箱即用，不需要复杂的配置</p>
+</li>
+<li>
+<p>你可以完全控制你的数据，而不用担心安全问题</p>
+</li>
+<li>
+<p>你可以使用官方的rendezvous/relay服务器，也可以建立你自己的rendezvous/relay服务器。</p>
+</li>
+</ul>
+<p>当然我们今天就是和大家分享一下如何搭建。</p>
+<h2 id="2.-%E9%A1%B9%E7%9B%AE%E5%B1%95%E7%A4%BA" tabindex="-1">2. 项目展示</h2>
+<p>GitHub原项目地址（感谢作者的付出）：<a href="https://github.com/rustdesk/rustdesk" target="_blank">https://github.com/rustdesk/rustdesk</a>（23.2k star）</p>
+<p>Docker镜像地址：<a href="https://hub.docker.com/r/rustdesk/rustdesk-server/tags" target="_blank">https://hub.docker.com/r/rustdesk/rustdesk-server/tags</a></p>
+<p>官网地址：<a href="https://rustdesk.com" target="_blank">https://rustdesk.com</a></p>
+<p>文档地址：<a href="https://rustdesk.com/docs/zh-cn/self-host/" target="_blank">https://rustdesk.com/docs/zh-cn/self-host/</a></p>
+<p>直接丢几个图片：</p>
+<p><img src="https://img.laoda.de/i/2022/06/30/ywfk7a-2.webp" alt="image-20220630211029167" /></p>
+<h2 id="3.-%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83" tabindex="-1">3. 搭建环境</h2>
+<ul>
+<li>服务器：<s>腾讯香港轻量应用服务器24元/月VPS一台</s>展示用的服务器是<a href="https://netcup-sonderangebote.de/" target="_blank">Netcup</a>特价款，本期搭建用的是<a href="https://blog.laoda.de/archives/spartanhost" target="_blank">斯巴达</a>的服务器，（最好是选<strong>非大陆的服务器</strong>）（<a href="https://loll.cc/tx" target="_blank">腾讯轻量购买链接</a>）<a href="https://loll.cc/hz" target="_blank">Hetzner注册免费得25欧试用金有效期一个月</a></li>
+<li>系统：Debian 10（<a href="https://blog.laoda.de/archives/useful-script#dd%E7%9B%B8%E5%85%B3" target="_blank">DD脚本</a> 非必需DD用原来的系统也OK）</li>
+<li>安装好Docker、Docker-compose（<a href="https://blog.laoda.de/archives/hello-docker#5%E5%AE%89%E8%A3%85dockerdocker-compose" target="_blank">相关脚本</a>）</li>
+<li><s>【非必需】域名一枚，并做好解析到服务器上（<a href="https://blog.laoda.de/archives/namesilo" target="_blank">域名购买、域名解析</a> <a href="https://www.bilibili.com/video/BV1Sy4y1k7kZ/" target="_blank">视频教程</a>）</s></li>
+<li><s>【非必需】提前安装好宝塔面板海外版本aapanel，并安装好Nginx（<a href="https://forum.aapanel.com/d/9-aapanel-linux-panel-6812-installation-tutorial" target="_blank">安装地址</a>）</s></li>
+<li><s>【非必需】安装好Nginx Proxy Manager（<a href="https://blog.laoda.de/archives/nginxproxymanager" target="_blank">相关教程</a>）</s></li>
+</ul>
+<blockquote>
+<p>服务器要求：</p>
+<p>硬件要求很低，最低配置的云服务器就可以了，CPU和内存要求都是最小的。关于网络大小，如果TCP打洞直连失败，就要耗费中继流量，一个中继连接的流量在30k-3M每秒之间（1920x1080屏幕），取决于清晰度设置和画面变化。如果只是办公需求，平均在100K/s。</p>
+</blockquote>
+<h2 id="4.-%E6%90%AD%E5%BB%BA%E8%A7%86%E9%A2%91" tabindex="-1">4. 搭建视频</h2>
+<p>YouTube：<a href="https://youtu.be/xQ19DLW4kok" target="_blank">https://youtu.be/xQ19DLW4kok</a></p>
+<p>哔哩哔哩【高清版本可以点击去吐槽到B站观看】：<joe-bilibili bvid="BV1or4y1M7UQ"></joe-bilibili></p>
+<h2 id="5.-%E6%90%AD%E5%BB%BA%E6%96%B9%E5%BC%8F" tabindex="-1">5. 搭建方式</h2>
+<h3 id="5.1-%E6%90%AD%E5%BB%BA" tabindex="-1">5.1 搭建</h3>
+<p>服务器初始设置，参考</p>
+<p><a href="https://blog.laoda.de/archives/vps-script" target="_blank"><strong>新买了一台服务器“必须”要做的6件小事</strong></a></p>
+<p><a href="https://blog.laoda.de/archives/hello-docker" target="_blank">【Docker系列】不用宝塔面板，小白一样可以玩转VPS服务器！</a></p>
+<blockquote>
+<p>注意：VPS的内存如果过小，建议设置一下SWAP，一般为内存的1-1.5倍即可，可以让系统运行更流畅！</p>
+</blockquote>
+<p>设置SWAP可以用脚本:</p>
+<pre><code class="language-bash">wget -O box.sh https://raw.githubusercontent.com/BlueSkyXN/SKY-BOX/main/box.sh &amp;&amp; chmod +x box.sh &amp;&amp; clear &amp;&amp; ./box.sh
+</code></pre>
+<p><img src="https://img.laoda.de/i/2022/05/28/uoikkd-0.webp" alt="image-20220528185512488" /></p>
+<p>选择<code>18</code>，然后输入你想要扩容的数值即可。</p>
+<p><img src="https://img.laoda.de/i/2022/05/28/up2dkf-0.webp" alt="image-20220528185604586" /></p>
+<pre><code class="language-bash">sudo -i # 切换到root用户
+<p>apt update -y  # 升级packages</p>
+<p>apt install wget curl sudo vim git  # Debian系统比较干净，安装常用的软件<br>
+</code></pre></p>
+<p>创建一下安装的目录：</p>
+<pre><code class="language-bash">mkdir -p /root/data/docker_data/rustdesk
+<p>cd /root/data/docker_data/rustdesk</p>
+<p>nano docker-compose.yml<br>
+</code></pre></p>
+<p><code>docker-compose.yml</code>填入以下内容：</p>
+<pre><code class="language-yaml">version: &#39;3&#39;
+<p>networks:<br>
+rustdesk-net:<br>
+external: false</p>
+<p>services:<br>
+hbbs:<br>
+container_name: hbbs<br>
+ports:<br>
+- 21115:21115<br>
+- 21116:21116<br>
+- 21116:21116/udp<br>
+- 21118:21118<br>
+image: rustdesk/rustdesk-server:latest<br>
+command: hbbs -r hbbs.example.com:21117   # hbbs.example.com改成<br>
+volumes:<br>
+- ./hbbs:/root<br>
+networks:<br>
+- rustdesk-net<br>
+depends_on:<br>
+- hbbr<br>
+restart: unless-stopped</p>
+<p>hbbr:<br>
+container_name: hbbr<br>
+ports:<br>
+- 21117:21117<br>
+- 21119:21119<br>
+image: rustdesk/rustdesk-server:latest<br>
+command: hbbr<br>
+volumes:<br>
+- ./hbbr:/root<br>
+networks:<br>
+- rustdesk-net<br>
+restart: unless-stopped<br>
+</code></pre></p>
+<p>没问题的话，<code>ctrl+x</code>退出，按<code>y</code>保存，<code>enter</code>确认。</p>
+<p>打开防火墙的端口<code>21115</code>、<code>21116</code>、<code>21117</code>、<code>21118</code>、<code>21119</code></p>
+<blockquote>
+<p>默认情况下，hbbs 监听<code>21115(tcp)</code>, <code>21116(tcp/udp)</code>, <code>21118(tcp)</code>，hbbr 监听<code>21117(tcp)</code>, <code>21119(tcp)</code>。</p>
+<p>务必在防火墙开启这几个端口， <strong>请注意<code>21116</code>同时要开启<code>TCP</code>和<code>UDP</code></strong>。</p>
+<p>其中<code>21115</code>是hbbs用作NAT类型测试，<code>21116/UDP</code>是hbbs用作ID注册与心跳服务，<code>21116/TCP</code>是hbbs用作TCP打洞与连接服务，<code>21117</code>是hbbr用作中继服务, <code>21118</code>和<code>21119</code>是为了支持网页客户端。</p>
+<p>如果您不需要网页客户端<code>（21118，21119）</code>支持，对应端口可以不开。</p>
+</blockquote>
+<ul>
+<li>TCP(<strong>21115, 21116, 21117, 21118, 21119</strong>)</li>
+<li>UDP(<strong>21116</strong>)</li>
+</ul>
+<p><img src="https://img.laoda.de/i/2022/06/30/zlio5h-2.webp" alt="image-20220630215240864" /></p>
+<p><img src="https://img.laoda.de/i/2022/06/30/10h3dqt-2.webp" alt="image-20220630220546335" /></p>
+<p><img src="https://img.laoda.de/i/2022/06/30/zkvklo-2.webp" alt="image-20220630215134217" /></p>
+<p><img src="https://img.laoda.de/i/2022/06/30/10hlio9-2.webp" alt="image-20220630220629996" /></p>
+<p>查看端口是否被占用（以<code>21115</code>为例），输入：</p>
+<pre><code class="language-bash">lsof -i:21115  #查看21115端口是否被占用，如果被占用，重新自定义一个端口
+</code></pre>
+<p>如果出现：</p>
+<pre><code class="language-bash">-bash: lsof: command not found
+</code></pre>
+<p>运行：</p>
+<pre><code class="language-bash">apt install lsof  #安装lsof
+</code></pre>
+<p>如果端口没有被占用，我们接着可以运行：</p>
+<pre><code class="language-bash">cd /root/data/docker_data/rustdesk
+<p>docker-compose up -d<br>
+</code></pre></p>
+<blockquote>
+<p><strong>注意：</strong></p>
+<p>1、不知道服务器IP，可以直接在命令行输入：<code>curl ip.sb</code>，会显示当前服务器的IP。</p>
+<p>2、遇到访问不了的情况，请在宝塔面板的防火墙和服务商的后台防火墙里打开对应端口。</p>
+</blockquote>
+<h3 id="5.2-%E6%9B%B4%E6%96%B0" tabindex="-1">5.2 更新</h3>
+<pre><code class="language-bash">cp -r /root/data/docker_data/rustdesk /root/data/docker_data/rustdesk.archive  # 万事先备份，以防万一
+<p>cd /root/data/docker_data/rustdesk  # 进入docker-compose所在的文件夹</p>
+<p>docker-compose pull    # 拉取最新的镜像</p>
+<p>docker-compose up -d   # 重新更新当前镜像<br>
+</code></pre></p>
+<p>利用Docker-compose搭建的应用，更新非常容易～</p>
+<h3 id="5.3-%E5%8D%B8%E8%BD%BD" tabindex="-1">5.3 卸载</h3>
+<pre><code class="language-bash">cd /root/data/docker_data/rustdesk  # 进入docker-compose所在的文件夹
+<p>docker-compose down    # 停止容器，此时不会删除映射到本地的数据</p>
+<p>rm -rf /root/data/docker_data/rustdesk  # 完全删除映射到本地的数据<br>
+</code></pre></p>
+<h2 id="6.-%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B" tabindex="-1">6. 使用教程</h2>
+<h3 id="6.1-%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE" tabindex="-1">6.1 安装和配置</h3>
+<p>见咕咕鸽的视频</p>
+<p>点击 ID 右侧的菜单按钮如下，选择“ ID/中继服务器”。</p>
+<p><img src="https://img.laoda.de/i/2022/06/30/10vdndr-2.webp" alt="img" /></p>
+<p>在 ID 服务器输入框中（被控端+主控端）输入 hbbs 主机或 ip 地址，另外两个地址可以不填，RustDesk会自动推导（如果没有特别设定），中继服务器指的是hbbr（21116）端口。</p>
+<p>例如:</p>
+<p>例如:</p>
+<pre><code class="language-bash">hbbs.example.com
+</code></pre>
+<p>或者</p>
+<pre><code class="language-bash">hbbs.example.com:21116
+</code></pre>
+<p><img src="https://img.laoda.de/i/2022/06/30/10werrl-2.webp" alt="img" /></p>
+<p><img src="https://img.laoda.de/i/2022/06/30/126s6aa-2.webp" alt="image-20220630230905895" /></p>
+<p><img src="https://img.laoda.de/i/2022/06/30/127cdzg-2.webp" alt="image-20220630231000711" /></p>
+<p><img src="https://img.laoda.de/i/2022/06/30/12b7cbz-2.webp" alt="image-20220630231648227" /></p>
+<p><img src="https://img.laoda.de/i/2022/06/30/128m0xb-2.webp" alt="image-20220630231211642" /></p>
+<h4 id="6.1.1-%E5%8A%9F%E8%83%BD%E5%B1%95%E7%A4%BA" tabindex="-1">6.1.1 功能展示</h4>
+<p><img src="https://img.laoda.de/i/2022/06/30/12awwj1-2.webp" alt="image-20220630231557544" /></p>
+<p><img src="https://img.laoda.de/i/2022/06/30/12bpj3z-2.webp" alt="image-20220630231732435" /></p>
+<p><img src="https://img.laoda.de/i/2022/06/30/12c44fx-2.webp" alt="image-20220630231801433" /></p>
+<h4 id="6.1.2-%E4%BC%A0%E8%BE%93%E6%96%87%E4%BB%B6" tabindex="-1">6.1.2 传输文件</h4>
+<p><img src="https://img.laoda.de/i/2022/06/30/12crxpe-2.webp" alt="image-20220630231912131" /></p>
+<p><img src="https://img.laoda.de/i/2022/06/30/12dih3s-2.webp" alt="image-20220630232034319" /></p>
+<h3 id="6.2-%E5%87%A0%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98" tabindex="-1">6.2 几个小问题</h3>
+<h4 id="6.2.1-%E5%8A%A0%E5%AF%86%E9%80%9A%E8%AF%9D" tabindex="-1">6.2.1 加密通话</h4>
+<p>默认是不加密的。我们可以通过设置Key，来加密通话。</p>
+<p>以下来自<a href="https://rustdesk.com/docs/zh-cn/self-host/install/" target="_blank">官方文档</a>：</p>
+<p>hbbs在第一次运行时，会自动产生一对加密私钥和公钥（分别位于运行目录下的<code>id_ed25519</code>和<code>id_ed25519.pub</code>文件中），其主要用途是为了通讯加密。</p>
+<p><img src="https://img.laoda.de/i/2022/06/30/111dylz-2.webp" alt="image-20220630223952511" /></p>
+<p>如果您在上一步骤中没有填写<code>Key:</code>(公钥文件<code>id_ed25519.pub</code>中的内容)，不影响连接，但是连接无法加密。</p>
+<pre><code class="language-">cat /root/data/docker_data/rustdesk/hbbs/id_ed25519.pub
+</code></pre>
+<p><img src="https://img.laoda.de/i/2022/06/30/111y9hm-2.webp" alt="image-20220630224047960" /></p>
+<p>如果您禁止没有key的用户建立非加密连接，请在运行hbbs和hbbr的时候添加<code>-k _ </code>参数，例如:</p>
+<pre><code class="language-yaml">version: &#39;3&#39;
+<p>networks:<br>
+rustdesk-net:<br>
+external: false</p>
+<p>services:<br>
+hbbs:<br>
+container_name: hbbs<br>
+ports:<br>
+- 21115:21115<br>
+- 21116:21116<br>
+- 21116:21116/udp<br>
+- 21118:21118<br>
+image: rustdesk/rustdesk-server:latest<br>
+command: hbbs -r hbbs.example.com:21117 -k _     # 加上-k _<br>
+volumes:<br>
+- ./hbbs:/root<br>
+networks:<br>
+- rustdesk-net<br>
+depends_on:<br>
+- hbbr<br>
+restart: unless-stopped</p>
+<p>hbbr:<br>
+container_name: hbbr<br>
+ports:<br>
+- 21117:21117<br>
+- 21119:21119<br>
+image: rustdesk/rustdesk-server:latest<br>
+command: hbbr -k _ # 加上-k _<br>
+volumes:<br>
+- ./hbbr:/root<br>
+networks:<br>
+- rustdesk-net<br>
+restart: unless-stopped<br>
+</code></pre></p>
+<blockquote>
+<p>实测加上<code>-k _</code>参数后，会导致无法连接，不确定是不是BUG，有解决的小伙伴欢迎在评论区留言交流！</p>
+</blockquote>
+<p>如果要更改key，请删除 <code>id_ed25519</code> 和 <code>id_ed25519.pub</code> 文件并重新启动 hbbs/hbbr，hbbs将会产生新的密钥对。</p>
+<h4 id="6.2.2-%E6%8A%8A%E9%85%8D%E7%BD%AE%E6%94%BE%E5%9C%A8%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%90%8D%E9%87%8C-(windows-only)" tabindex="-1">6.2.2 把配置放在可执行文件名里 (Windows only)</h4>
+<p>把<code>rustdesk.exe</code> 修改为 rustdesk-<code>host=&lt;host-ip-or-name&gt;,key=&lt;public-key-string&gt;</code>.exe, 例如： rustdesk-<code>host=192.168.1.137,key=xfdsfsd32=32</code>.exe，你可以在About窗口看到配置结果，如下图所示。</p>
+<p><code>host</code> 和 <code>key</code> 都需要添加，缺少一个就不好使。</p>
+<blockquote>
+<p>如果密钥中有无效字符而不能用于文件名，请删除<code>id_ed25519</code>文件并重新启动hbbs/hbbr，<code>id_ed25519.pub</code>文件将被重新生成，请重复操作直到获得有效字符。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Menu</th>
+<th style="text-align:left">About Page</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><a href="https://rustdesk.com/docs/en/self-host/install/images/aboutmenu.png" target="_blank"><img src="https://img.laoda.de/i/2022/06/30/10x5em3-2.webp" alt="img" /></a></td>
+<td style="text-align:left"><a href="https://rustdesk.com/docs/en/self-host/install/images/lic.png" target="_blank"><img src="https://img.laoda.de/i/2022/06/30/10x5to7-2.webp" alt="img" /></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="7.-%E7%BB%93%E5%B0%BE" tabindex="-1">7. 结尾</h2>
+<p>祝大家用得开心，有问题可以去GitHub提<a href="https://github.com/rustdesk/rustdesk-server/issues" target="_blank">Issues</a>，也可以在评论区互相交流探讨。</p>
+<p>同时，有能力给项目做贡献的同学，也欢迎积极加入到<a href="https://github.com/rustdesk" target="_blank">项目</a>中来，贡献自己的一份力量！</p>
+<h2 id="8.-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99" tabindex="-1">8. 参考资料</h2>
+<p><a href="https://github.com/rustdesk/rustdesk-server" target="_blank">https://github.com/rustdesk/rustdesk-server</a></p>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://diss.one/kang-zheng-zhe-de-jing-yan/">
+              <h3 class="post-title">
+                只谈经验
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://diss.one" target="_blank"> 表酱紫 </a>
+  <a class="rss" href="https://diss.one/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

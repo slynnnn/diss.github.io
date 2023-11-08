@@ -1,0 +1,179 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Nginx Proxy Manager 一款Nginx可视化面板  | 表酱紫 </title>
+<link rel="shortcut icon" href="https://diss.one/favicon.ico?v=1699419513018">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://diss.one/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Nginx Proxy Manager 一款Nginx可视化面板  | 表酱紫  - Atom Feed" href="https://diss.one/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KL7J9YT996"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KL7J9YT996');
+</script>
+
+
+    <meta name="description" content="&nbsp;宝塔有后门&#65292;伤心了&#65292;如果不考虑建站的只考虑反向代理的换Nginx Proxy Manager吧 老外都在用&nbsp;回头告诉大家怎么用&nbsp;Nginx 原理知道了 啥面板用起来都一样
+
+搭建流..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://diss.one">
+  <img class="avatar" src="https://diss.one/images/avatar.png?v=1699419513018" alt="">
+  </a>
+  <h1 class="site-title">
+    表酱紫 
+  </h1>
+  <p class="site-description">
+    复杂的世界 一个就够了
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="/lnks" class="menu">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Nginx Proxy Manager 一款Nginx可视化面板 
+            </h2>
+            <div class="post-info">
+              <span>
+                08-11-2022
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://diss.one/post-images/nginx-proxy-manager-yi-kuan-nginx-ke-shi-hua-mian-ban.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <p>&nbsp;宝塔有后门&#65292;伤心了&#65292;如果不考虑建站的只考虑反向代理的</p><p>换Nginx Proxy Manager吧 老外都在用&nbsp;</p><p>回头告诉大家怎么用&nbsp;Nginx 原理知道了 啥面板用起来都一样</p>
+<br />
+<p>搭建流程独一份 整理了一下 全网最简单细致的 看着很多其实不难&#12290;</p><p><br /></p><p>重装</p><p>bash &lt;(wget --no-check-certificate -qO- 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh') -d 11 -v 64 -a -firmware -p 123456</p><p><br /></p><p><br /></p><p>更新环境</p><p>apt update -y &amp;&amp; apt install -y curl &amp;&amp; apt install -y socat &amp;&amp; apt install wget -y</p><p><br /></p><p><br /></p><p>安装sudo</p><p>apt-get install sudo</p><p><br /></p><p><br /></p><p>BBR PLUS 四合一脚本</p><p>wget -N --no-check-certificate "https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh" &amp;&amp; chmod +x tcp.sh &amp;&amp; ./tcp.sh</p><p><br /></p><p><br /></p><p>安装 Docker</p><p>sudo apt install docker.io -y &amp;&amp; sudo apt install docker-compose</p><p><br /></p><p>自启动docker</p><p>sudo systemctl enable --now docker</p><p><br /></p><p>创建目录并进入目录</p><p>cd /home/</p><p>mkdir -p /root/data/docker_data/npm</p><p>cd npm</p><p><br /></p><p>创建docker-compose.yml的文件</p><p>nano docker-compose.yml</p><p><br /></p><p>复制代码进入文件中</p><p>version: "3"</p><p>services:</p><p>&nbsp; app:</p><p>&nbsp; &nbsp; image: 'jc21/nginx-proxy-manager:latest'</p><p>&nbsp; &nbsp; restart: unless-stopped</p><p>&nbsp; &nbsp; ports:</p><p>&nbsp; &nbsp; &nbsp; # These ports are in format &lt;host-port&gt;:&lt;container-port&gt;</p><p>&nbsp; &nbsp; &nbsp; - '80:80' # Public HTTP Port</p><p>&nbsp; &nbsp; &nbsp; - '443:443' # Public HTTPS Port</p><p>&nbsp; &nbsp; &nbsp; - '81:81' # Admin Web Port</p><p>&nbsp; &nbsp; &nbsp; # Add any other Stream port you want to expose</p><p>&nbsp; &nbsp; &nbsp; # - '21:21' # FTP</p><p>&nbsp; &nbsp; environment:</p><p>&nbsp; &nbsp; &nbsp; DB_MYSQL_HOST: "db"</p><p>&nbsp; &nbsp; &nbsp; DB_MYSQL_PORT: 3306</p><p>&nbsp; &nbsp; &nbsp; DB_MYSQL_USER: "npm"</p><p>&nbsp; &nbsp; &nbsp; DB_MYSQL_PASSWORD: "npm"</p><p>&nbsp; &nbsp; &nbsp; DB_MYSQL_NAME: "npm"</p><p>&nbsp; &nbsp; &nbsp; # Uncomment this if IPv6 is not enabled on your host</p><p>&nbsp; &nbsp; &nbsp; # DISABLE_IPV6: 'true'</p><p>&nbsp; &nbsp; volumes:</p><p>&nbsp; &nbsp; &nbsp; - ./data:/data</p><p>&nbsp; &nbsp; &nbsp; - ./letsencrypt:/etc/letsencrypt</p><p>&nbsp; &nbsp; depends_on:</p><p>&nbsp; &nbsp; &nbsp; - db</p><p><br /></p><p>&nbsp; db:</p><p>&nbsp; &nbsp; image: 'jc21/mariadb-aria:latest'</p><p>&nbsp; &nbsp; restart: unless-stopped</p><p>&nbsp; &nbsp; environment:</p><p>&nbsp; &nbsp; &nbsp; MYSQL_ROOT_PASSWORD: 'npm'</p><p>&nbsp; &nbsp; &nbsp; MYSQL_DATABASE: 'npm'</p><p>&nbsp; &nbsp; &nbsp; MYSQL_USER: 'npm'</p><p>&nbsp; &nbsp; &nbsp; MYSQL_PASSWORD: 'npm'</p><p>&nbsp; &nbsp; volumes:</p><p>&nbsp; &nbsp; &nbsp; - ./data/mysql:/var/lib/mysql</p><p><br /></p><p>crl&#65291;x 然后y 然后回车退出编辑模式</p><p><br /></p><p>启动</p><p>docker-compose up -d</p><p><br /></p><p><br /></p><p>默认用户名密码</p><p>Email:&nbsp; &nbsp; admin@example.com</p><p>Password: changeme</p><p><br /></p><p><br /></p><p>Xiu</p><p>bash &lt;(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)</p><p><br /></p>
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://diss.one/ru-guo-da-gui-mo-zhan-zheng-bao-fa-pu-tong-bai-xing-ying-gai-ru-he-ying-dui/">
+              <h3 class="post-title">
+                如果大规模战争爆发，普通百姓应该如何应对
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://diss.one" target="_blank"> 表酱紫 </a>
+  <a class="rss" href="https://diss.one/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

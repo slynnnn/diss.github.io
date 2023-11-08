@@ -1,0 +1,308 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>qbittorrent : 10分钟搭建你专属的下载神器  | 表酱紫 </title>
+<link rel="shortcut icon" href="https://diss.one/favicon.ico?v=1699419513018">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://diss.one/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="qbittorrent : 10分钟搭建你专属的下载神器  | 表酱紫  - Atom Feed" href="https://diss.one/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KL7J9YT996"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KL7J9YT996');
+</script>
+
+
+    <meta name="description" content="简介
+前阵子，入手了一号双鸡两台3o，无限流量，1T的硬盘空间，所以想着折腾一下一直听说，但是又似乎很神奇的PT下载（正好租户给了我几个邀请码）。
+PT 即 Private Tracker ，一种小范围、附带流量统计的下载。根据上传流量不同..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://diss.one">
+  <img class="avatar" src="https://diss.one/images/avatar.png?v=1699419513018" alt="">
+  </a>
+  <h1 class="site-title">
+    表酱紫 
+  </h1>
+  <p class="site-description">
+    复杂的世界 一个就够了
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="/lnks" class="menu">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              qbittorrent : 10分钟搭建你专属的下载神器 
+            </h2>
+            <div class="post-info">
+              <span>
+                01-18-2023
+              </span>
+              <span>
+                7 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="简介">简介</h2>
+<p>前阵子，入手了一号双鸡两台3o，无限流量，1T的硬盘空间，所以想着折腾一下一直听说，但是又似乎很神奇的PT下载（正好租户给了我几个邀请码）。</p>
+<p>PT 即 Private Tracker ，一种小范围、附带流量统计的下载。根据上传流量不同，用户拥有不同身份，对应不同权限甚至不同下载速度。为了提高上传流量，一般会需要一台能够持续不断下载上传的机子（一般会用NAS），VPS24小时开机，加上3o又是不限流量，还有1T的硬盘空间，是非常理想的PT鸡鸡。</p>
+<p>今天就来安装一个大名鼎鼎的开源下载神器——qBittorrent， 照例还是采用Docker安装的方式， 实现 24 小时下载与上传。</p>
+<h2 id="准备工作">准备工作</h2>
+<ul>
+<li>VPS一台，Debian操作系统（以腾讯云轻量为例子，如果你下载很频繁最好是用无限流量的机子 推荐<a href="https://loll.cc/buyvm">BuyVM</a>）</li>
+<li>安装Docker</li>
+<li>安装Docker compose</li>
+<li>宝塔面板（可选）</li>
+</ul>
+<h2 id="视频教程">视频教程</h2>
+<p>视频待补充</p>
+<h2 id="开始部署">开始部署</h2>
+<h3 id="安装docker">安装Docker</h3>
+<img src="https://pic.loll.cc/images/2021/09/08/20210908161006.png" alt="b2ee2d5db779494d8fc64df7cb2b3a2a" style="zoom:50%;" />
+<h4 id="更新安装必备软件">更新、安装必备软件</h4>
+<pre><code class="language-bash">apt-get update &amp;&amp; apt-get install -y wget vim
+</code></pre>
+<h4 id="安装脚本">安装脚本</h4>
+<pre><code class="language-bash">wget -qO- get.docker.com | bash
+</code></pre>
+<h4 id="查看-docker-安装版本等信息">查看 Docker 安装版本等信息</h4>
+<pre><code class="language-bash">docker version
+</code></pre>
+<h4 id="启动-docker-服务">启动 Docker 服务</h4>
+<pre><code class="language-bash">systemctl start docker
+</code></pre>
+<h4 id="查看-docker-运行状态">查看 Docker 运行状态</h4>
+<pre><code class="language-bash">systemctl status docker
+</code></pre>
+<h4 id="将-docker-服务加入开机自启动">将 Docker 服务加入开机自启动</h4>
+<pre><code class="language-bash">systemctl enable docker
+</code></pre>
+<h3 id="安装docker-compose">安装Docker compose</h3>
+<pre><code class="language-bash">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose
+</code></pre>
+<p>赋予执行权限，</p>
+<pre><code class="language-bash">sudo chmod +x /usr/local/bin/docker-compose
+</code></pre>
+<p>查看docker-compose 版本，</p>
+<pre><code class="language-bash">docker-compose --version
+</code></pre>
+<h3 id="安装宝塔可选">安装宝塔（可选）</h3>
+<p>访问官网：<a href="https://www.bt.cn/bbs/thread-19376-1-1.html">https://www.bt.cn/bbs/thread-19376-1-1.html</a></p>
+<p>免登陆脚本，更多脚本可以看这里：<a href="https://breakthewa11.com/archives/useful-script.html">整理了一些常用的VPS服务器脚本，让你更好地玩鸡鸡！</a></p>
+<pre><code class="language-bash">sed -i &quot;s|if (bind_user == 'True') {|if (bind_user == 'REMOVED') {|g&quot; /www/server/panel/BTPanel/static/js/index.js
+<p>rm -rf /www/server/panel/data/bind.pl<br>
+</code></pre></p>
+<h3 id="安装qbittorrent">安装qBittorrent</h3>
+<p>本文安装基于Debian10，对于其他环境，Docker的命令也应该是通用的。</p>
+<p>DockerHub 上附带 qBittorrent Web UI的 qBittorent 客户端镜像为：</p>
+<pre><code class="language-bash">linuxserver/qbittorrent
+</code></pre>
+<p>1、拉取镜像</p>
+<pre><code class="language-bash">docker pull linuxserver/qbittorrent
+</code></pre>
+<p>2、创建对应目录并编写 Docker-Compose 文件</p>
+<pre><code class="language-bash">cd ~
+mkdir qBittorrent #创建qbitorrent数据文件夹
+cd qBittorrent
+mkdir config downloads #创建配置文件目录与下载目录
+nano docker-compose.yml #创建并编辑文件
+</code></pre>
+<p>3、复制如下内容并按需修改：</p>
+<pre><code class="language-bash">version: &quot;2&quot;
+services:
+  qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai # 你的时区
+      - UMASK_SET=022
+      - WEBUI_PORT=8081 # 将此处修改成你欲使用的 WEB 管理平台端口 
+    volumes:
+      - ~/qBittorrent/config:/config # 绝对路径请修改为自己的config文件夹
+      - ~/qBittorrent/downloads:/downloads # 绝对路径请修改为自己的downloads文件夹
+    ports:
+      # 要使用的映射下载端口与内部下载端口，可保持默认，安装完成后在管理页面仍然可以改成其他端口。
+      - 6881:6881 
+      - 6881:6881/udp
+      # 此处WEB UI 目标端口与内部端口务必保证相同，见问题1
+      - 8081:8081
+    restart: unless-stopped
+</code></pre>
+<p>4、执行docker-compose</p>
+<pre><code class="language-bash">docker-compose up -d # docker-compose
+# 执行后，如果得法，访问 ip:web-ui-port 即可进入管理页面。
+# 默认用户名密码admin/adminadmin
+</code></pre>
+<p><strong>注意</strong>：腾讯云、阿里云等用户记得在后台防火墙打开<code>8081</code>端口</p>
+<h2 id="使用qbittorrent">使用qBittorrent</h2>
+<p>访问<code>ip:port</code>，进入 WebUI 管理界面。</p>
+<p>默认账号<code>admin</code>,默认密码<code>adminadmin</code></p>
+<img src="https://pic.loll.cc/images/2021/09/08/20210908160941.png" alt="811fc81e015e418db64d8b9388775f69" style="zoom:33%;" />
+<img src="https://pic.loll.cc/images/2021/09/08/20210908160926.png" alt="228a3069cca9407aa59d98e3ab3cb80a" style="zoom:33%;" />
+<h3 id="修改页面为中文界面">修改页面为中文界面</h3>
+<p>打开如下面板：</p>
+<img src="https://pic.loll.cc/images/2021/09/08/20210908155049.png" alt="520c10346dcc41b396e0ed92b133a46a" style="zoom:50%;" />
+<p><code>Tool-&gt;Options-&gt;WebUI</code> 将<code>Language</code>修改为简体中文，并点击最下方的<code>Save</code>即可。</p>
+<h3 id="修改下载与上传使用的端口">修改下载与上传使用的端口</h3>
+<p>运营商可能会对常用的 BT/PT 端口(6881,688x)进行限速，大多数 PT 站会拒绝这些端口的请求。</p>
+<p>修改端口方法如下：</p>
+<img src="https://pic.loll.cc/images/2021/09/08/20210908155144.png" alt="2dd4602b5f054302bdf4119479eed65d" style="zoom:50%;" />
+<p><code>工具</code>-&gt;<code>选项</code>-&gt;<code>连接</code>将监听端口修改为 PT 站接受的端口。</p>
+<h3 id="可能遇到的问题">可能遇到的问题</h3>
+<h4 id="网页管理平台白屏无内容">网页管理平台白屏无内容</h4>
+<p>检查 <code>docekr-compose.yml</code> 文件中的 <code>WEBUI_PORT</code> 与 端口映射是否都为一个端口。如果端口映射中内部端口与外部端口不同，可能会导致白屏。</p>
+<h4 id="如何访问下载的文件">如何访问下载的文件</h4>
+<p>可以通过FTP、Samba或者基于 Web 的目录程序访问对应目录。我推荐使用同样基于 Docker 的FileBrowser进行在线文件管理。</p>
+<img src="https://pic.loll.cc/images/2021/09/08/20210908160847.png" alt="3378a0fbd23a496abc1b0b6024dec139" style="zoom:33%;" />
+<img src="https://pic.loll.cc/images/2021/09/08/20210908160902.png" alt="f1d7df9554e84b3ea7d9ce69a5f31b75" style="zoom:33%;" />
+<p>具体的安装方法可以看这篇：<a href="https://blog.laoda.de/archives/aria2-rclone-filebrowser">手把手教你搭建私人离线下载神器Aria2，搭配Rclone+Filebrowser自动上传至网盘</a></p>
+<h2 id="优化">优化</h2>
+<h3 id="rss自动下载设置pt推荐">RSS自动下载设置（PT推荐）</h3>
+<p>打开<code>获取RSS订阅</code>与<code>启用RSS Torrent自动下载</code></p>
+<img src="https://pic.loll.cc/images/2021/09/08/20210908155611.png" alt="f93ce303dbe3451081e435c82182ab1b" style="zoom:50%;" />
+<p>添加两条下载规则，分别是<code>no</code>和<code>auto</code>，其中<code>no</code>的规则<code>添加后不开始下载</code>选择<code>总是</code></p>
+<img src="https://pic.loll.cc/images/2021/09/08/20210908155624.png" alt="18d69c9a943d41be9dc08e9a73f8b798" style="zoom:50%;" />
+<p>其中<code>auto</code>的规则<code>添加后不开始下载</code>选择<code>实用全局设定</code></p>
+<img src="https://pic.loll.cc/images/2021/09/08/20210908155633.png" alt="4c89d853c98a4b30813984e4fcf149b3" style="zoom:50%;" />
+<p>然后你就可以去PT站，把RSS地址复制过来，先勾选no不勾选auto，此时你会看到自动下载了10个种子任务，然后你把这10个种子任务删除掉，再次打开这边的规则，勾选auto，把no的勾勾去掉，点击保存，之后，只要PT站有新的种子上传，你这边机器就能自动下载了（一般新种都是免费的，可以刷上传量）</p>
+<h3 id="其他">其他</h3>
+<img src="https://pic.loll.cc/images/2021/09/08/20210908160616.png" alt="d1046fadbee6408d8cbd5d8ec269c76f" style="zoom: 33%;" />
+<p>勾选上面三项可以优化磁盘读写性能。缓存到期时间为磁盘缓存除以最大下载速度，到时间后数据就从内存写入磁盘。</p>
+<img src="https://pic.loll.cc/images/2021/09/08/20210908160705.png" alt="image-20210908160705523" style="zoom:33%;" />
+<p>现在操作系统的块大小都是4KB，这是最小的储存单位。举个最简单的例子，你新建一个文件什么都不写都会占用4KB空间。原来默认是上限是500KB，下限是10KB，强迫症让我把发送缓存都设置为4的整数，或许对磁盘性能有优化，设置太高会浪费内存。官方文档说加大增长系数可以加快上传速度，BT用户默认50%够用，而PT用户为了抢上传，可以设置成100甚至更高。</p>
+<p>由于本咕也刚刚使用，很多设置也在摸索中，如果大家有使用心得，欢迎在评论区一起交流！</p>
+<h3 id="参考资料">参考资料</h3>
+<p><a href="https://blog.csdn.net/maxuearn/article/details/104562021">https://blog.csdn.net/maxuearn/article/details/104562021</a><br />
+<a href="https://www.colorcc.net/qbittorrent%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BC%98%E5%8C%96%EF%BC%88%E8%B4%9F%E4%BC%98%E5%8C%96%EF%BC%89/">https://www.colorcc.net/qbittorrent%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BC%98%E5%8C%96%EF%BC%88%E8%B4%9F%E4%BC%98%E5%8C%96%EF%BC%89/</a><br />
+<a href="https://blog.laoda.de/archives/vps-recommad">https://blog.laoda.de/archives/vps-recommad</a></p>
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://diss.one/yi-ge-you-xiu-de-zhi-bo-lu-zhi-gong-ju/">
+              <h3 class="post-title">
+                一个优秀的直播录制工具
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://diss.one" target="_blank"> 表酱紫 </a>
+  <a class="rss" href="https://diss.one/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

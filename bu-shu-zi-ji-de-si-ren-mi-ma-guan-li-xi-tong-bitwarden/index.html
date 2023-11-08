@@ -1,0 +1,327 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>部署自己的私人密码管理系统-Bitwarden | 表酱紫 </title>
+<link rel="shortcut icon" href="https://diss.one/favicon.ico?v=1699419513018">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://diss.one/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="部署自己的私人密码管理系统-Bitwarden | 表酱紫  - Atom Feed" href="https://diss.one/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KL7J9YT996"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KL7J9YT996');
+</script>
+
+
+    <meta name="description" content="简介
+Bitwarden是一款可靠的开源密码管理系统，它可以安全地接管你的所有密码，并将其加密保存在你自己的服务器上，支持全平台客户端，包括网页端、桌面端、浏览器拓展、手机应用以及Linux命令行客户端。
+这里我们使用Bitwarden_r..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://diss.one">
+  <img class="avatar" src="https://diss.one/images/avatar.png?v=1699419513018" alt="">
+  </a>
+  <h1 class="site-title">
+    表酱紫 
+  </h1>
+  <p class="site-description">
+    复杂的世界 一个就够了
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="/lnks" class="menu">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              部署自己的私人密码管理系统-Bitwarden
+            </h2>
+            <div class="post-info">
+              <span>
+                01-16-2023
+              </span>
+              <span>
+                7 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="%E7%AE%80%E4%BB%8B" tabindex="-1">简介</h1>
+<p><code>Bitwarden</code>是一款可靠的开源密码管理系统，它可以安全地接管你的所有密码，并将其加密保存在你自己的服务器上，支持全平台客户端，包括网页端、桌面端、浏览器拓展、手机应用以及Linux命令行客户端。</p>
+<p>这里我们使用<code>Bitwarden_rs</code>的Docker发行版镜像来部署，因为它使用Rust重构了服务端，速度更快、资源占用更小。</p>
+<h1 id="%E9%83%A8%E7%BD%B2%E6%9C%8D%E5%8A%A1" tabindex="-1">部署服务</h1>
+<h2 id="%E5%89%8D%E7%BD%AE%E6%9D%A1%E4%BB%B6%EF%BC%9A" tabindex="-1"><strong>前置条件：</strong></h2>
+<ul>
+<li>首先你需要有一台长期稳定的安全的服务器</li>
+</ul>
+<p>如果你的服务器动不动就重装系统，那么就非常不适合用来存这些敏感且重要的数据，你应该知道这些数据的丢失将可能导致你永久失去一些服务的访问权。</p>
+<ul>
+<li>你应当拥有一定的相关技术知识</li>
+</ul>
+<p>如果你不知道怎么配置Nginx反向代理，不知道什么是SSL/TLS加密，不会部署和维护容器，而且对于网络通信安全没有什么认知和概念的话，不建议使用自建的密码托管服务。</p>
+<p><strong>对于不满足上述的两种条件的同学，我推荐你直接去使用可信的第三方平台提供的密码托管服务。</strong><br />
+下面列举一些知名的密码托管服务商</p>
+<p>Bitwarden官方：<a href="https://bitwarden.com" target="_blank">https://bitwarden.com</a><br />
+1Password：<a href="https://1password.com/zh-cn/" target="_blank">https://1password.com/zh-cn/</a><br />
+Keepeer：<a href="https://www.keepersecurity.com" target="_blank">https://www.keepersecurity.com</a><br />
+And so on…</p>
+<ul>
+<li>服务器需要有安装Docker和DockerCompose</li>
+</ul>
+<p>如果你没有安装，可以看我的这篇文章：<a href="https://www.hash070.top/archives/docker-and-docker-compose-install.html" target="_blank">https://www.hash070.top/archives/docker-and-docker-compose-install.html</a></p>
+<h2 id="%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%AD%98%E6%94%BE%E7%9B%AE%E5%BD%95%E4%B8%8Edocker-compose%E6%8F%8F%E8%BF%B0%E6%96%87%E4%BB%B6" tabindex="-1">创建数据存放目录与docker-compose描述文件</h2>
+<p>首先我推荐创建一个全新的目录，专门用于存放<code>Bitwarden</code>的数据文件，后期如果需要迁移服务器的话直接把这个文件夹打包带走就可以了。</p>
+<p>这里假设我们创建了一个名为<code>Bitwarden</code>的文件夹，专门存放该容器的数据文件。</p>
+<pre><code class="language-bash">
+# 创建文件夹
+mkdir /root/data/docker_data/Bitwarden
+#cd到创建的文件夹
+cd /root/data/docker_data/Bitwarden
+</code></pre>
+<p>然后使用vim创建并填写docker-compose描述文件。</p>
+<pre><code class="language-bash">vim docker-compose.yml
+</code></pre>
+<p>向这个文件中写入如下文本</p>
+<pre><code class="language-yaml">version: &#39;3.3&#39;
+services:
+    server:
+        container_name: vaultwarden
+        restart: unless-stopped
+        environment:
+            - WEBSOCKET_ENABLED=true #开启WebSocket
+            - SIGNUPS_ALLOWED=false #开启注册，自己注册后改成false
+            - WEB_VAULT_ENABLED=false #web客户端
+        volumes:
+            - &#39;./data/:/data/&#39;
+        ports:
+            - &#39;8080:80&#39;
+            - &#39;3012:3012&#39;
+        image: &#39;vaultwarden/server:latest&#39;
+</code></pre>
+<p>按ESC ，按住shift+:，输入wq ， 退出编辑器</p>
+<p>其中<code>8080:80</code>意思是将容器的http端口映射到服务器的8080端口上，你可以根据自己的需求随意更改</p>
+<p>另外一个<code>3012</code>端口是用于<code>WebSocket</code>通信的</p>
+<p>以上两个端口不应在防火墙中开放，我们后面会使用Nginx反向代理这两个端口。</p>
+<h2 id="%E4%B8%8A%E7%BA%BFdocker%E5%AE%B9%E5%99%A8" tabindex="-1">上线Docker容器</h2>
+<p>当你将compose描述文件正确填写并保存后，在当前文件夹下，通过执行下面这行命令就可以上线你的Bitwarden容器了。</p>
+<pre><code class="language-bash">docker-compose up -d
+</code></pre>
+<p>附 docker-compose常用命令：</p>
+<pre><code class="language-bash"># 上线容器
+docker-compose up -d
+# 停止容器
+docker-compose stop
+# 启动容器
+docker-compose start
+# 重启容器
+docker-compose restart
+# 下线（删除）容器
+docker-compose down
+# 删除容器不会导致你的数据丢失，你的数据库保存在了当前目录下的data文件夹内，请妥善保管该目录
+</code></pre>
+<h2 id="%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86" tabindex="-1">反向代理</h2>
+<p>我们使用Nginx反向代理来实现网站的SSL加密以保证数据传输安全并隐藏与保护后端容器。</p>
+<p>可以通过acme脚本自动申请与部署，具体看这篇文章：<a href="https://oive.net/nginx-proxy-manager-zuo-fan-xiang-dai-li/" target="_blank">https://oive.net/nginx-proxy-manager-zuo-fan-xiang-dai-li/</a></p>
+<h2 id="%E9%AB%98%E7%BA%A7%E8%AE%BE%E7%BD%AE%EF%BC%9A%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E5%91%98" tabindex="-1">高级设置：后台管理员</h2>
+<p><strong>注意，一旦设置管理员口令并启用管理员面板，该功能将无法关闭，且无法重置该口令</strong></p>
+<p>要启用后台管理员，你需要在compose描述文件中的<code>environment</code>项中添加如下配置</p>
+<pre><code class="language-yaml">ADMIN_TOKEN=管理员口令
+</code></pre>
+<p>注意，口令的长度应该很长且无规律，弱口令将导致你的密码管理服务器不安全。</p>
+<p>Tip：可以使用OpenSSL生成随机字符串来当管理员口令</p>
+<p>下面这条命令可以生成一个48位的字符串，这些字符串可以充当口令</p>
+<pre><code class="language-bash">openssl rand -base64 48
+</code></pre>
+<p><img src="https://img.hash070.top/i/638acc583f9b1.webp" alt="image-20220622213424153" /></p>
+<p>修改后的environemet部分应该看起来像是这样的</p>
+<pre><code class="language-yaml">environment:
+     - ADMIN_TOKEN=txWN3bnqTGJv9ENgNko0euISyiO51p7zXSl8QP/3wRO5VC1iJF0LiU2InLoO3Nzi
+     - WEBSOCKET_ENABLED=true
+     - SIGNUPS_ALLOWED=true
+</code></pre>
+<p>你需要通过下线(down)容器并重新上线(up)容器来让修改生效。</p>
+<p>之后你可以通过访问域名+/admin的方式进入管理面板</p>
+<p>如<code>https://password.apple.com/admin</code></p>
+<p>你需要在这里输入你在环境变量中设置的Token</p>
+<p><img src="https://img.hash070.top/i/638acc58950e5.webp" alt="image-20220622214321902" /></p>
+<h2 id="%E5%85%B3%E9%97%AD%E6%B3%A8%E5%86%8C%E5%8A%9F%E8%83%BD" tabindex="-1">关闭注册功能</h2>
+<p>在你自己注册完自己的帐号后可以选择关闭注册功能。</p>
+<p>将<code>environment</code>部分的<code>SIGNUPS_ALLOWED</code>的值调整为<code>false</code></p>
+<pre><code class="language-yaml">environment:
+    - ADMIN_TOKEN=txWN3bnqTGJv9ENgNko0euISyiO51p7zXSl8QP/3wRO5VC1iJF0LiU2InLoO3Nzi
+    - WEBSOCKET_ENABLED=false
+    - SIGNUPS_ALLOWED=true
+</code></pre>
+<p>然后down掉容器并重新上线容器使其生效</p>
+<pre><code class="language-bash"># 下线（删除）容器
+docker-compose down
+</code></pre>
+<pre><code class="language-bash"># 上线容器
+docker-compose up -d
+</code></pre>
+<p>更多的进阶配置可以看该镜像的官方文档：<a href="https://github.com/dani-garcia/vaultwarden/wiki" target="_blank">https://github.com/dani-garcia/vaultwarden/wiki</a></p>
+<h1 id="%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B" tabindex="-1">使用教程</h1>
+<h2 id="%E6%B3%A8%E5%86%8C%E5%B8%90%E5%8F%B7" tabindex="-1">注册帐号</h2>
+<p>在配置完反代后我们就可以输入域名，进入Bitwarden开始使用了</p>
+<p><strong>一定要确保在此之前你已经正确地配置了SSL证书，否则你的通信内容将全过程裸奔，还不如不用！</strong></p>
+<img src="https://img.hash070.top/i/638acc58637d2.webp" alt="image-20220622225045905" style="zoom: 80%;" />
+<p><img src="https://img.hash070.top/i/638acc58a716a.webp" alt="image-20220622210102026" /></p>
+<p>ps：如果是个人使用的话，注册完帐号后建议关闭注册功能。</p>
+<h2 id="%E6%9B%B4%E6%94%B9%E8%AF%AD%E8%A8%80" tabindex="-1">更改语言</h2>
+<p>默认语言为英文，如果你用不习惯可以将语言改为中文</p>
+<p><img src="https://img.hash070.top/i/638acc58b1817.webp" alt="image-20220622220044393" /></p>
+<h2 id="%E5%AF%BC%E5%85%A5%E4%BD%A0%E7%9A%84%E5%AF%86%E7%A0%81" tabindex="-1">导入你的密码</h2>
+<h3 id="%E4%BB%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%AD%E5%AF%BC%E5%87%BA%E5%AF%86%E7%A0%81" tabindex="-1">从浏览器中导出密码</h3>
+<p>以我所使用的Chrome浏览器为例：</p>
+<p>依次进入<code>设置</code>-&gt;<code>自动填充</code>-&gt;<code>密码</code>-&gt;<code>导出密码</code></p>
+<p><img src="https://img.hash070.top/i/638acc587d90d.webp" alt="image-20220623074655461" /><br />
+<img src="https://img.hash070.top/i/638acc590ce70.webp" alt="image-20220623074719208" /><br />
+<img src="https://img.hash070.top/i/638acc591605b.webp" alt="image-20220623074816916" /></p>
+<p>最终会导出一个csv文件，你在<code>Chrome</code>中储存的<code>所有密码</code>都会以<code>明文</code>的形式保存在里面</p>
+<p><strong>因此您应该明白该文件高度敏感和机密，不要使用任何第三方软件传输该文件，您应尽快将该文件导入到Bitwarden中并在这之后立即彻底销毁该文件。</strong></p>
+<h3 id="%E5%9C%A8bitwarden%E4%B8%AD%E5%AF%BC%E5%85%A5%E5%AF%86%E7%A0%81" tabindex="-1">在Bitwarden中导入密码</h3>
+<p>打开你的Bitwarden，找到<code>工具</code>-&gt;<code>导入数据</code>-&gt;<code>选择格式</code>-&gt;<code>选择刚导出的文件</code>-&gt;<code>点击导入数据</code><br />
+导入格式根据你的实际情况来选择，我是用Chrome导出的csv，所以这里我理所应当地选择了<code>Chrome(csv)</code></p>
+<p><img src="https://img.hash070.top/i/638acc595093f.webp" alt="image-20220623075547588" /></p>
+<p>然后你就可以看到你的密码库中已经可以看到刚刚导入的密码了。</p>
+<p><img src="https://img.hash070.top/i/638acc595186a.webp" alt="image-20220623075834720" /></p>
+<h2 id="%E4%B8%8B%E8%BD%BD%E4%B8%8E%E4%BD%BF%E7%94%A8app" tabindex="-1">下载与使用app</h2>
+<p>在<code>appstore</code>搜索<code>bitwarden</code>就能找到</p>
+<img src="https://img.hash070.top/i/638acc5bd0fe8.webp" style="zoom:25%;" />
+<p>进入软件后，点击右上角的设置图标</p>
+<img src="https://img.hash070.top/i/638acc5a4f9c2.webp" alt="61660889-47C8-4372-8118-EC197EF23857.png" style="zoom:25%;" />
+<p>将<code>Server URL</code>换成你自己的服务器地址</p>
+<img src="https://img.hash070.top/i/638acc5b0b8c0.webp" alt="4BD6651E-D33D-40CB-93AC-33DAC477D6E5.png" style="zoom:25%;" />
+<p>然后点击登录，输入你自己的帐号密码即可。</p>
+<p>在iOS系统中，<code>设置</code>-&gt;<code>密码-</code>&gt;<code>自动填充</code>中，勾选<code>bitwarden</code>后就可以让它来接管你的密码了。</p>
+<img src="https://img.hash070.top/i/638acc5b4104c.webp" alt="1384629A-2801-475C-A474-AC63E86B353B.png" style="zoom:25%;" />
+<p>其他平台的软件使用方法我就不一一介绍了</p>
+<p>使用方法都大同小异，点击右上角的<code>获取应用</code>按钮可以查看和下载官方发布的客户端</p>
+<p><img src="https://img.hash070.top/i/638acc5ab7967.webp" alt="image-20220622223736474" /></p>
+<p><img src="https://img.hash070.top/i/638acc5ad65cc.webp" alt="image-20220622223822264" /></p>
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://diss.one/nginx-proxy-manager-zuo-fan-xiang-dai-li/">
+              <h3 class="post-title">
+                Nginx Proxy Manager 做反向代理
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://diss.one" target="_blank"> 表酱紫 </a>
+  <a class="rss" href="https://diss.one/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

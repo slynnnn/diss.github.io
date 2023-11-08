@@ -1,0 +1,238 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>如何使用Gmail的SMTP服务来发送电子邮件 | 表酱紫 </title>
+<link rel="shortcut icon" href="https://diss.one/favicon.ico?v=1699419513018">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://diss.one/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="如何使用Gmail的SMTP服务来发送电子邮件 | 表酱紫  - Atom Feed" href="https://diss.one/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KL7J9YT996"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KL7J9YT996');
+</script>
+
+
+    <meta name="description" content="简介
+SMTP是常见的邮件发送协议，我们可以很方便地使用SMTP协议将邮件快速安全地发送出去，之前在研究如何使用Gmali的SMTP服务在WordPress发邮件时，搜到好多文章说要到Google Developers Console开启G..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://diss.one">
+  <img class="avatar" src="https://diss.one/images/avatar.png?v=1699419513018" alt="">
+  </a>
+  <h1 class="site-title">
+    表酱紫 
+  </h1>
+  <p class="site-description">
+    复杂的世界 一个就够了
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="/lnks" class="menu">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              如何使用Gmail的SMTP服务来发送电子邮件
+            </h2>
+            <div class="post-info">
+              <span>
+                01-16-2023
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="%E7%AE%80%E4%BB%8B" tabindex="-1">简介</h1>
+<p>SMTP是常见的邮件发送协议，我们可以很方便地使用SMTP协议将邮件快速安全地发送出去，之前在研究如何使用Gmali的SMTP服务在WordPress发邮件时，搜到好多文章说要到<code>Google Developers Console</code>开启GmailAPI服务之类的，简直离谱，因为想要使用Gmail的SMTP，只需要在自己的账户上设置一个“应用程序密码”就ok了，本文就来记录一下如何设置。</p>
+<h1 id="%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4" tabindex="-1">操作步骤</h1>
+<p><strong>一、打开谷歌账号安全设置</strong></p>
+<p>谷歌账号网址： <a href="https://myaccount.google.com/security" target="_blank">https://myaccount.google.com/security</a></p>
+<p><strong>二、点击<code>安全性</code>菜单后，进入<code>应用专用密码</code></strong></p>
+<p><img src="https://img.hash070.top/i/63731bb673ff5.webp" alt="image-20221115125518016" /></p>
+<p><strong>三、生成邮件应用专用密码</strong></p>
+<p>如下图所示，第一栏的应用类型选<code>邮件</code>，应用设备随意选，不影响使用。</p>
+<p><img src="https://img.hash070.top/i/63731c7d50fd0.webp" alt="image-20221115125837283" /></p>
+<p>点击<code>生成</code>按钮后，系统会将新生成的密钥展示<strong>一次</strong>，通过密钥可以用来使用Gmail邮件的SMTP、IMAP之类的服务了，请将它保存在安全的地方。</p>
+<p><img src="https://img.hash070.top/i/63746aa49070c.webp" alt="1668573859122.webp" /></p>
+<p>实测该密钥可以通过IMAP和SMTP协议与Gmail服务器通信，某邮件客户端的测试成功截图：</p>
+<p><img src="https://img.hash070.top/i/637325869e303.webp" alt="1668490630700.webp" /></p>
+<h1 id="%E9%99%84%EF%BC%9Agmail%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3" tabindex="-1">附：Gmail官方文档</h1>
+<p>如果您通过 SSL 或 TLS 连接网络，则可以使用 <strong><a href="http://smtp.gmail.com" target="_blank">smtp.gmail.com</a></strong> 作为服务器，向组织内外的任何人员发送邮件。</p>
+<p>选用此选项时，您必须通过 Gmail 或 Google Workspace 帐号和密码进行身份验证。</p>
+<h4 id="%E5%A6%82%E6%9E%9C%E6%89%93%E5%8D%B0%E6%9C%BA%E6%88%96%E6%89%AB%E6%8F%8F%E4%BB%AA%E4%B8%8D%E6%94%AF%E6%8C%81%E4%B8%A4%E6%AD%A5%E9%AA%8C%E8%AF%81" tabindex="-1">如果打印机或扫描仪不支持两步验证</h4>
+<p>通过 OAuth，应用和设备无需您的用户名或密码就能访问您的 Google 帐号数据。不过，较旧款的扫描仪或打印机可能不支持 OAuth。在这种情况下，请先执行以下步骤，再设置设备：</p>
+<ol>
+<li><a href="https://support.google.com/a/answer/6260879" target="_blank">在管理控制台中启用安全性较低的应用</a>。</li>
+<li>让用户<a href="https://support.google.com/accounts/answer/6010255" target="_blank">在其帐号中启用安全性较低的应用</a>。</li>
+<li>让用户<a href="https://support.google.com/mail/answer/185833" target="_blank">创建和使用应用专用密码</a>，以用于将发送电子邮件的设备或应用。</li>
+</ol>
+<h4 id="%E8%A6%81%E6%B1%82" tabindex="-1">要求</h4>
+<table>
+<thead>
+<tr>
+<th><strong>发送上限</strong></th>
+<th>每天 2,000 封邮件。            有关详情，请参阅<a href="https://support.google.com/a/answer/166852" target="_blank">电子邮件发送上限</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>反垃圾邮件过滤器</strong></td>
+<td>可疑的电子邮件可能会被过滤或拒绝。</td>
+</tr>
+<tr>
+<td><strong>SMTP 服务的完全限定域名</strong></td>
+<td><a href="http://smtp.gmail.com" target="_blank">smtp.gmail.com</a></td>
+</tr>
+<tr>
+<td><strong>配置选项</strong></td>
+<td>端口：465（需要 SSL） 端口：587（需要 TLS）允许动态 IP                                      有关详情，请参阅 <a href="https://support.google.com/a/answer/100181" target="_blank">SSL 连接概览</a></td>
+</tr>
+<tr>
+<td><strong>身份验证要求</strong></td>
+<td>必须提供完整的 Gmail 或 Google Workspace 电子邮件地址（&lt;您的用户名&gt;@solarmora.com）才能进行身份验证。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="%E4%B8%BA%E5%BA%94%E7%94%A8%E6%88%96%E8%AE%BE%E5%A4%87%E8%AE%BE%E7%BD%AE-gmail-smtp-%E6%9C%8D%E5%8A%A1%E5%99%A8" tabindex="-1"><strong>为应用或设备设置 Gmail SMTP 服务器</strong></h4>
+<ol>
+<li>
+<p>在设备或应用中，输入 <strong><a href="http://smtp.gmail.com" target="_blank">smtp.gmail.com</a></strong> 作为服务器地址。</p>
+</li>
+<li>
+<p>在 <strong>端口</strong> 字段中，输入以下数字之一：</p>
+<ul>
+<li>如果您使用的是 SSL，请输入 <strong>465</strong>。</li>
+<li>如果您使用的是 TLS，请输入 <strong>587</strong>。</li>
+</ul>
+</li>
+<li>
+<p>如要进行身份验证，请输入完整的 Google Workspace 或 Gmail 地址（例如：&lt;您的用户名&gt;@solarmora.com））和密码。在设备或应用中使用帐号前，请务必先登录该帐号。</p>
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://diss.one/ru-he-shan-chu-docker-rong-qi-jing-xiang-juan-he-wang-luo/">
+              <h3 class="post-title">
+                如何删除Docker容器，镜像，卷和网络
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://diss.one" target="_blank"> 表酱紫 </a>
+  <a class="rss" href="https://diss.one/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

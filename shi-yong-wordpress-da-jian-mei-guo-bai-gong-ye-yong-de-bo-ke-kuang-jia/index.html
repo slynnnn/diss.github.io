@@ -1,0 +1,374 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>使用Wordpress搭建美国白宫也用的博客框架 | 表酱紫 </title>
+<link rel="shortcut icon" href="https://diss.one/favicon.ico?v=1699419513018">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://diss.one/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="使用Wordpress搭建美国白宫也用的博客框架 | 表酱紫  - Atom Feed" href="https://diss.one/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KL7J9YT996"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KL7J9YT996');
+</script>
+
+
+    <meta name="description" content="哔哩哔哩【高清版本可以点击去吐槽到B站观看】：
+5. 搭建方式
+5.1 搭建
+服务器初始设置，参考
+新买了一台服务器“必须”要做的6件小事
+【Docker系列】不用宝塔面板，小白一样可以玩转VPS服务器！
+sudo -i # 切换到root..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://diss.one">
+  <img class="avatar" src="https://diss.one/images/avatar.png?v=1699419513018" alt="">
+  </a>
+  <h1 class="site-title">
+    表酱紫 
+  </h1>
+  <p class="site-description">
+    复杂的世界 一个就够了
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="/lnks" class="menu">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              使用Wordpress搭建美国白宫也用的博客框架
+            </h2>
+            <div class="post-info">
+              <span>
+                11-24-2022
+              </span>
+              <span>
+                6 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <p>哔哩哔哩【高清版本可以点击去吐槽到B站观看】：<joe-bilibili bvid="BV1Mu411671f"></joe-bilibili></p>
+<h2 id="5.-%E6%90%AD%E5%BB%BA%E6%96%B9%E5%BC%8F" tabindex="-1">5. 搭建方式</h2>
+<h3 id="5.1-%E6%90%AD%E5%BB%BA" tabindex="-1">5.1 搭建</h3>
+<p>服务器初始设置，参考</p>
+<p><a href="https://blog.laoda.de/archives/vps-script" target="_blank"><strong>新买了一台服务器“必须”要做的6件小事</strong></a></p>
+<p><a href="https://blog.laoda.de/archives/hello-docker" target="_blank">【Docker系列】不用宝塔面板，小白一样可以玩转VPS服务器！</a></p>
+<pre><code class="language-bash">sudo -i # 切换到root用户
+<p>apt update -y  # 升级packages</p>
+<p>apt install wget curl sudo vim git  # Debian系统比较干净，安装常用的软件<br>
+</code></pre></p>
+<p>创建一下安装的目录：</p>
+<pre><code class="language-bash">mkdir -p /root/data/docker_data/wordpress
+<p>cd /root/data/docker_data/wordpress</p>
+<p>nano docker-compose.yml<br>
+</code></pre></p>
+<p><code>docker-compose.yml</code>来源<a href="https://hub.docker.com/_/wordpress" target="_blank">官方仓库</a>，内容如下：</p>
+<pre><code class="language-bash">version: &#39;3.1&#39;
+<p>services:</p>
+<p>wordpress:<br>
+image: wordpress<br>
+restart: always<br>
+ports:<br>
+- 8080:80<br>
+environment:<br>
+WORDPRESS_DB_HOST: db<br>
+WORDPRESS_DB_USER: exampleuser<br>
+WORDPRESS_DB_PASSWORD: examplepass<br>
+WORDPRESS_DB_NAME: exampledb<br>
+volumes:<br>
+- /root/data/docker_data/wordpress/data:/var/www/html</p>
+<p>db:<br>
+image: mysql:5.7<br>
+restart: always<br>
+environment:<br>
+MYSQL_DATABASE: exampledb<br>
+MYSQL_USER: exampleuser<br>
+MYSQL_PASSWORD: examplepass<br>
+MYSQL_RANDOM_ROOT_PASSWORD: '1'<br>
+volumes:<br>
+- /root/data/docker_data/wordpress/db:/var/lib/mysql</p>
+<p>#volumes:</p>
+<h1 id="wordpress">wordpress:</h1>
+<h1 id="db">db:</h1>
+<p></code></pre></p>
+<blockquote>
+<p>注意：VPS的内存最好大于1G，可以再设置1G的SWAP，本项目内容存储在内存中～</p>
+</blockquote>
+<p>设置SWAP可以用脚本:</p>
+<pre><code class="language-bash">wget -O box.sh https://raw.githubusercontent.com/BlueSkyXN/SKY-BOX/main/box.sh &amp;&amp; chmod +x box.sh &amp;&amp; clear &amp;&amp; ./box.sh
+</code></pre>
+<p>没问题的话，<code>ctrl+x</code>退出，按<code>y</code>保存，<code>enter</code>确认。</p>
+<p>查看端口是否被占用，输入：</p>
+<pre><code class="language-bash">lsof -i:8080  #查看8080端口是否被占用，如果被占用，重新自定义一个端口
+</code></pre>
+<p>如果出现：</p>
+<pre><code class="language-bash">-bash: lsof: command not found
+</code></pre>
+<p>运行：</p>
+<pre><code class="language-bash">apt install lsof  #安装lsof
+</code></pre>
+<p>如果端口没有被占用，可以运行：</p>
+<pre><code class="language-bash">docker-compose up -d 
+</code></pre>
+<p>访问：<code>http:服务ip:8080</code> 即可。</p>
+<blockquote>
+<p><strong>注意：</strong></p>
+<p>1、不知道服务器IP，可以直接在命令行输入：<code>curl ip.sb</code>，会显示当前服务器的IP。</p>
+<p>2、遇到访问不了的情况，请在宝塔面板的防火墙和服务商的后台防火墙里打开对应端口。</p>
+</blockquote>
+<h3 id="5.2-%E6%9B%B4%E6%96%B0" tabindex="-1">5.2 更新</h3>
+<pre><code class="language-bash">cd /root/data/docker_data/wordpress  # 进入docker-compose所在的文件夹
+<p>docker-compose pull    # 拉取最新的镜像</p>
+<p>docker-compose up -d   # 重新更新当前镜像<br>
+</code></pre></p>
+<p>利用Docker-compose搭建的应用，更新非常容易～</p>
+<h3 id="5.3-%E5%8D%B8%E8%BD%BD" tabindex="-1">5.3 卸载</h3>
+<pre><code class="language-bash">sudo -i  # 切换到root
+<p>cd /root/data/docker_data/wordpress  # 进入docker-compose所在的文件夹</p>
+<p>docker-compose down    # 停止容器，此时不会删除映射到本地的数据</p>
+<p>cd ~</p>
+<p>rm -rf /root/data/docker_data/wordpress  # 完全删除映射到本地的数据<br>
+</code></pre></p>
+<p>利用Docker-compose搭建的应用，删除也非常容易～</p>
+<h2 id="6.-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%EF%BC%88%E5%BF%85%E9%A1%BB%EF%BC%89" tabindex="-1">6. 反向代理（必须）</h2>
+<blockquote>
+<p><strong>此项目和别的项目不同，必须采用https形式，否则浏览器无法加密，无法使用。</strong></p>
+</blockquote>
+<h3 id="6.1-%E5%88%A9%E7%94%A8nginx-proxy-manager" tabindex="-1">6.1 利用Nginx Proxy Manager</h3>
+<p>在添加反向代理之前，确保你已经完成了域名解析，不会的可以看这个：<strong>域名一枚，并做好解析到服务器上</strong>（<a href="https://blog.laoda.de/archives/namesilo" target="_blank">域名购买、域名解析</a> <a href="https://www.bilibili.com/video/BV1Sy4y1k7kZ/" target="_blank">视频教程</a>）</p>
+<p>之后，登陆Nginx Proxy Manager（不会的看这个：<strong>安装Nginx Proxy Manager</strong>（<a href="https://blog.laoda.de/archives/nginxproxymanager" target="_blank">相关教程</a>））</p>
+<blockquote>
+<p><strong>注意：</strong></p>
+<p>Nginx Proxy Manager（以下简称NPM）会用到<code>80</code>、<code>443</code>端口，所以本机不能占用（比如原来就有Nginx）</p>
+</blockquote>
+<p>直接丢几张图：</p>
+<img src="https://img.laoda.de/i/2022/05/02/kfes4s_7.webp" alt="image-20220502123517401" style="zoom: 33%;" />
+<img src="https://img.laoda.de/i/2022/05/14/h3a8q0-0.webp" alt="image-20220514103342515" style="zoom: 33%;" />
+<blockquote>
+<p>注意填写对应的<code>域名</code>、<code>IP</code>和<code>端口</code>，按文章来的话，应该是<code>8080</code></p>
+</blockquote>
+<p><strong>IP填写：</strong></p>
+<p>如果Nginx Proxy Manager和reader在同一台服务器上，可以在终端输入：</p>
+<pre><code class="language-bash">ip addr show docker0
+</code></pre>
+<p>查看对应的Docker容器内部IP。</p>
+<p>否则直接填<code>cryptgeon所在的服务器IP</code>就行。</p>
+<img src="https://img.laoda.de/i/2022/04/03/h9azjx_7.webp" alt="image-20220403104353185" style="zoom: 33%;" />
+<p>再次打开，勾选这些：</p>
+<img src="https://img.laoda.de/i/2022/05/14/h3q94q-0.webp" alt="image-20220514103416636" style="zoom:33%;" />
+<p>然后就可以用域名来安装访问了。</p>
+<h2 id="7.-%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B" tabindex="-1">7. 使用教程</h2>
+<h4 id="7.1-%E5%87%BA%E7%8E%B0%E4%B8%8A%E4%BC%A0%E7%9A%84%E6%96%87%E4%BB%B6%E5%B0%BA%E5%AF%B8%E8%B6%85%E8%BF%87php.ini%E4%B8%AD%E5%AE%9A%E4%B9%89%E7%9A%84upload_max_filesize%E5%80%BC" tabindex="-1">7.1 出现上传的文件尺寸超过<code>php.ini</code>中定义的<code>upload_max_filesize</code>值</h4>
+<p>默认php设置的上传文件大小为2M，我们需要调整一下。参考：<a href="https://github.com/docker-library/wordpress/issues/375" target="_blank">https://github.com/docker-library/wordpress/issues/375</a></p>
+<pre><code class="language-bash">cd /root/data/docker_data/wordpress
+<p>nano uploads.ini<br>
+</code></pre></p>
+<p>输入下面的内容：</p>
+<pre><code class="language-bash">file_uploads = On
+upload_max_filesize = 256M    #可以自己设置大小
+post_max_size = 256M  #可以自己设置大小
+</code></pre>
+<p><code>ctrl+x</code>，<code>y</code>，<code>enter</code> 确认。</p>
+<p>修改<code>docker-compose</code>文件，<code>volume</code>下面加入一句：</p>
+<pre><code class="language-bash">- ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+</code></pre>
+<p>完整的配置文件：</p>
+<pre><code class="language-bash">version: &#39;3.1&#39;
+<p>services:</p>
+<p>wordpress:<br>
+image: wordpress<br>
+restart: always<br>
+ports:<br>
+- 8080:80<br>
+environment:<br>
+WORDPRESS_DB_HOST: db<br>
+WORDPRESS_DB_USER: exampleuser<br>
+WORDPRESS_DB_PASSWORD: examplepass<br>
+WORDPRESS_DB_NAME: exampledb<br>
+volumes:<br>
+- /root/data/docker_data/wordpress/data:/var/www/html<br>
+- /root/data/docker_data/wordpress/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini</p>
+<p>db:<br>
+image: mysql:5.7<br>
+restart: always<br>
+environment:<br>
+MYSQL_DATABASE: exampledb<br>
+MYSQL_USER: exampleuser<br>
+MYSQL_PASSWORD: examplepass<br>
+MYSQL_RANDOM_ROOT_PASSWORD: '1'<br>
+volumes:<br>
+- /root/data/docker_data/wordpress/db:/var/lib/mysql</p>
+<p>#volumes:</p>
+<h1 id="wordpress-2">wordpress:</h1>
+<h1 id="db-2">db:</h1>
+<p></code></pre></p>
+<p>重新启动容器：</p>
+<pre><code class="language-bash">docker-compose down 
+<p>docker-compose up -d<br>
+</code></pre></p>
+<p>查看：</p>
+<pre><code class="language-bash">docker exec 你的wp容器id php -i | grep upload
+</code></pre>
+<h4 id="7.2-%E5%87%BA%E7%8E%B0%E2%80%9C%E5%9B%A0%E4%B8%BA%E6%88%91%E4%BB%AC%E4%B8%8D%E8%83%BD%E5%A4%8D%E5%88%B6%E4%B8%80%E4%BA%9B%E6%96%87%E4%BB%B6%EF%BC%8C%E5%8D%87%E7%BA%A7%E6%9C%AA%E8%A2%AB%E5%AE%89%E8%A3%85%EF%BC%8C%E8%BF%99%E9%80%9A%E5%B8%B8%E6%98%AF%E5%9B%A0%E4%B8%BA%E5%AD%98%E5%9C%A8%E4%B8%8D%E4%B8%80%E8%87%B4%E7%9A%84%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E2%80%9D%E7%9A%84%E9%94%99%E8%AF%AF" tabindex="-1">7.2 出现“因为我们不能复制一些文件，升级未被安装，这通常是因为存在不一致的文件权限”的错误</h4>
+<pre><code class="language-bash">cd /root/data/docker_data/wordpress/data
+<p>chmod -R 777 wp-content</p>
+<p>docker-compose down</p>
+<p>docker-compose up -d<br>
+</code></pre></p>
+<h4 id="7.3-%E4%B8%8A%E4%BC%A0%E4%B8%BB%E9%A2%98%EF%BC%8C%E5%87%BA%E7%8E%B0%E2%80%9C%E6%82%A8%E7%82%B9%E5%87%BB%E7%9A%84%E9%93%BE%E6%8E%A5%E5%B7%B2%E8%BF%87%E6%9C%9F%E2%80%9D" tabindex="-1">7.3 上传主题，出现“您点击的链接已过期”</h4>
+<p>解决方法：</p>
+<pre><code class="language-bash">cd /root/data/docker_data/wordpress/data
+<p>vim .htaccess</p>
+<p></code></pre></p>
+<p>在<code>.htaccess</code>最后面加上：</p>
+<pre><code class="language-bash">php_value max_execution_time 300
+php_value upload_max_filesize 256M
+php_value post_max_size 256M
+php_value memory_limit 128M
+php_value max_input_vars 5000
+</code></pre>
+<p><img src="https://img.laoda.de/i/2022/10/12/p1grzz-2.webp" alt="" /></p>
+<p>这样就能成功上传了～</p>
+<p><img src="https://img.laoda.de/i/2022/10/12/p1m9ww-2.webp" alt="" /></p>
+<h2 id="8.-%E7%BB%93%E5%B0%BE" tabindex="-1">8. 结尾</h2>
+<p>祝大家用得开心，有问题可以去GitHub提<a href="https://github.com/WordPress/WordPress" target="_blank">Issues</a>，也可以在评论区互相交流探讨。</p>
+<p>同时，有能力给项目做贡献的同学，也欢迎积极<a href="https://github.com/WordPress/WordPress" target="_blank">加入到项目</a>中来，贡献自己的一份力量！</p>
+<h2 id="9.-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99" tabindex="-1">9. 参考资料</h2>
+<p><a href="https://github.com/WordPress/WordPress" target="_blank">https://github.com/WordPress/WordPress</a></p>
+<p><a href="https://hub.docker.com/_/wordpress" target="_blank">https://hub.docker.com/_/wordpress</a></p>
+<p><a href="https://github.com/docker-library/wordpress/issues/375" target="_blank">https://github.com/docker-library/wordpress/issues/375</a></p>
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#wordpress">wordpress:</a></li>
+<li><a href="#db">db:</a></li>
+<li><a href="#wordpress-2">wordpress:</a></li>
+<li><a href="#db-2">db:</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://diss.one/2022-wordpress-ban-jia-jiao-cheng-qing-qing-song-song-gao-ding-zheng-zhan-qian-yi/">
+              <h3 class="post-title">
+                2022 WordPress搬家教程，轻轻松松搞定整站迁移
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://diss.one" target="_blank"> 表酱紫 </a>
+  <a class="rss" href="https://diss.one/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

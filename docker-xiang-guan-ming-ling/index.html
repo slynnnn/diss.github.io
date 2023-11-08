@@ -1,0 +1,287 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>docker相关命令 | 表酱紫 </title>
+<link rel="shortcut icon" href="https://diss.one/favicon.ico?v=1699419513018">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://diss.one/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="docker相关命令 | 表酱紫  - Atom Feed" href="https://diss.one/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KL7J9YT996"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KL7J9YT996');
+</script>
+
+
+    <meta name="description" content="安装Docker、Docker-compose
+更新、安装必备软件
+apt-get update &amp;&amp; apt-get install -y wget vim
+
+非大陆Docker安装
+wget -qO- get.docke..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://diss.one">
+  <img class="avatar" src="https://diss.one/images/avatar.png?v=1699419513018" alt="">
+  </a>
+  <h1 class="site-title">
+    表酱紫 
+  </h1>
+  <p class="site-description">
+    复杂的世界 一个就够了
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="/lnks" class="menu">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              docker相关命令
+            </h2>
+            <div class="post-info">
+              <span>
+                09-10-2022
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="5%E3%80%81%E5%AE%89%E8%A3%85docker%E3%80%81docker-compose" tabindex="-1">安装Docker、Docker-compose</h2>
+<h3 id="%E6%9B%B4%E6%96%B0%E3%80%81%E5%AE%89%E8%A3%85%E5%BF%85%E5%A4%87%E8%BD%AF%E4%BB%B6" tabindex="-1">更新、安装必备软件</h3>
+<pre><code class="language-bash">apt-get update &amp;&amp; apt-get install -y wget vim
+</code></pre>
+<h3 id="%E9%9D%9E%E5%A4%A7%E9%99%86docker%E5%AE%89%E8%A3%85" tabindex="-1">非大陆Docker安装</h3>
+<pre><code class="language-bash">wget -qO- get.docker.com | bash
+</code></pre>
+<p>注意：出现<code>sudo: unable to resolve host [hostname]</code>,可以编辑<code>nano /etc/hosts</code>然后在</p>
+<img src="https://pic.loll.cc/images/2021/12/05/202112051441164.png" alt="image-20211205144134019" style="zoom:50%;" />
+<p>localhost后面空一格，再打上<code>[hostname]</code>你对应的hostname内容。</p>
+<h3 id="%E6%9F%A5%E7%9C%8Bdocker%E7%89%88%E6%9C%AC" tabindex="-1">查看Docker版本</h3>
+<pre><code class="language-bash">docker -v
+</code></pre>
+<h3 id="%E5%BC%80%E6%9C%BA%E8%87%AA%E5%8A%A8%E5%90%AF%E5%8A%A8" tabindex="-1">开机自动启动</h3>
+<pre><code class="language-bash">systemctl enable docker
+</code></pre>
+<h3 id="%E5%8D%B8%E8%BD%BDdocker" tabindex="-1">卸载Docker</h3>
+<pre><code class="language-bash">sudo apt-get purge docker-ce docker-ce-cli containerd.io
+</code></pre>
+<pre><code class="language-bash">sudo rm -rf /var/lib/docker
+sudo rm -rf /var/lib/containerd
+</code></pre>
+<h3 id="%E9%9D%9E%E5%A4%A7%E9%99%86docker-compose%E5%AE%89%E8%A3%85" tabindex="-1">非大陆Docker-compose安装</h3>
+<pre><code class="language-bash">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose
+</code></pre>
+<pre><code class="language-bash">sudo chmod +x /usr/local/bin/docker-compose
+</code></pre>
+<pre><code class="language-bash">docker-compose --version
+</code></pre>
+<img src="https://pic.loll.cc/images/2021/12/05/202112051443430.png" alt="image-20211205144336324" style="zoom:50%;" />
+<p>大陆内地的服务器安装请见这边：<a href="https://blog.laoda.de/archives/useful-script#docker%E7%9B%B8%E5%85%B3" target="_blank">国内机安装docker</a></p>
+<h3 id="%E4%BF%AE%E6%94%B9docker%E9%85%8D%E7%BD%AE%EF%BC%88%E6%9D%A5%E8%87%AA%E7%83%A7%E9%A5%BC%E5%8D%9A%E5%AE%A2%EF%BC%89" tabindex="-1">修改Docker配置（来自<a href="https://u.sb/debian-install-docker/" target="_blank">烧饼博客</a>）</h3>
+<p>以下配置会增加一段自定义内网 IPv6 地址，开启容器的 IPv6 功能，以及限制日志文件大小，防止 Docker 日志塞满硬盘（泪的教训）：</p>
+<pre><code class="language-bash">cat &gt; /etc/docker/daemon.json &lt;&lt;EOF
+{
+    &quot;log-driver&quot;: &quot;json-file&quot;,
+    &quot;log-opts&quot;: {
+        &quot;max-size&quot;: &quot;20m&quot;,
+        &quot;max-file&quot;: &quot;3&quot;
+    },
+    &quot;ipv6&quot;: true,
+    &quot;fixed-cidr-v6&quot;: &quot;fd00:dead:beef:c0::/80&quot;,
+    &quot;experimental&quot;:true,
+    &quot;ip6tables&quot;:true
+}
+EOF
+</code></pre>
+<p>然后重启 Docker 服务：</p>
+<pre><code class="language-bash">systemctl restart docker
+</code></pre>
+<h2 id="6%E3%80%81%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86" tabindex="-1">6、文件管理</h2>
+<p>强烈建议大家专门给Docker的数据、配置文件新建一个文件夹，</p>
+<pre><code class="language-bash">mkdir -p data/docker_data
+</code></pre>
+<p>这样如果换服务器或者想要备份，都会很方便。</p>
+<img src="https://pic.loll.cc/images/2021/12/05/202112051445178.png" alt="image-20211205144543041" style="zoom:50%;" />
+<img src="https://pic.loll.cc/images/2021/12/05/202112051448803.png" alt="image-20211205144822664" style="zoom:50%;" />
+<img src="https://pic.loll.cc/images/2021/12/05/202112051450650.png" alt="image-20211205145020493" style="zoom:50%;" />
+<p>这边我们以之前搭建过的minimalist为例子<a href="https://blog.laoda.de/archives/docker-install-minimalist" target="_blank">【好玩的Docker项目】搭建一个简洁的记事本——minimalist-web-notepad</a></p>
+<p>来简单讲讲。</p>
+<p>首先进入我们创建好的文件夹下，</p>
+<img src="https://pic.loll.cc/images/2021/12/05/202112051453987.png" alt="image-20211205145334845" style="zoom:50%;" />
+<p>运行，</p>
+<pre><code class="language-bash">wget https://github.com/pereorga/minimalist-web-notepad/archive/refs/heads/docker.zip
+</code></pre>
+<img src="https://pic.loll.cc/images/2021/12/05/202112051456373.png" alt="image-20211205145659238" style="zoom:50%;" />
+<p>然后</p>
+<img src="https://pic.loll.cc/images/2021/12/05/202112051457527.png" alt="image-20211205145715475" style="zoom:50%;" />
+<p>没有unzip，我们就安装一个</p>
+<pre><code class="language-bash">apt install unzip
+</code></pre>
+<p>再运行</p>
+<pre><code class="language-">unzip docker.zip
+</code></pre>
+<img src="https://pic.loll.cc/images/2021/12/05/202112051458203.png" alt="image-20211205145834093" style="zoom:50%;" />
+<pre><code class="language-bash">cd minimalist-web-notepad-docker/
+</code></pre>
+<p>建立镜像，</p>
+<pre><code class="language-bash">docker build -t minimalist-web-notepad .
+</code></pre>
+<p>安装minimalist，</p>
+<pre><code class="language-bash">docker run -d -it --restart=always --name minimalist-web-notepad -v /root/data/docker_data/minimalist/minimalist-data:/var/www/html/_tmp -p 8006:80 minimalist-web-notepad
+</code></pre>
+<p>注意这里的映射路径，我们改成了刚前面创建的路径<code>/root/data/docker_data/minimalist</code></p>
+<p>这样你的东西就都在这边啦。</p>
+<p><img src="https://pic.loll.cc/images/2021/12/05/202112051501709.png" alt="image-20211205150144574" /></p>
+<p>一般来说，看到这一长串的东西，就说明创建成功啦。</p>
+<p>由于Debian是本身开放所有端口的，所以直接访问即可，但是因为我们是腾讯云轻量服务器，后台默认还有一个防火墙，我们需要登陆把后台的防火墙里的<code>8006</code>端口打开（对应docker命令的<code>8006:80</code>），这样就能访问了。</p>
+<img src="https://pic.loll.cc/images/2021/12/05/202112051508602.png" alt="image-20211205150839451" style="zoom:50%;" />
+<img src="https://pic.loll.cc/images/2021/12/05/202112051509814.png" alt="image-20211205150902745" style="zoom:50%;" />
+<img src="https://pic.loll.cc/images/2021/12/05/202112051509410.png" alt="image-20211205150938302" style="zoom:50%;" />
+<p>当然你要是觉得麻烦，也可以直接填<code>ALL</code>，这样就开放所有端口了，以后就不用每次来设置了，但是不推荐。</p>
+<img src="https://pic.loll.cc/images/2021/12/05/202112051510917.png" alt="image-20211205151012846" style="zoom:50%;" />
+<p>然后我还非常推荐你再建立一个<code>txt</code>文件，记录这条docker命令。</p>
+<pre><code class="language-bash">nano config.txt
+</code></pre>
+<p>然后输入前面的命令，</p>
+<pre><code class="language-bash">docker run -d -it --restart=always --name minimalist-web-notepad -v /root/data/docker_data/minimalist/minimalist-data:/var/www/html/_tmp -p 8006:80 minimalist-web-notepad
+</code></pre>
+<p><code>Ctrl+x</code>退出，按<code>y</code>确认，回车。</p>
+<img src="https://pic.loll.cc/images/2021/12/05/202112051506899.png" alt="image-20211205150658729" style="zoom:50%;" />
+<p>用IP+端口就可以访问了！</p>
+<p>问题来了，之前我们都是通过宝塔面板上面建立一个空壳站点，然后修改配置文件来进行反向代理的，这下没有了宝塔面板，要怎么搞？</p>
+<p>难道要手动去修改nginx的配置文件吗？</p>
+<p>我还得安装一个nginx？感觉好麻烦啊！</p>
+<p><img src="https://pic.loll.cc/images/2021/12/05/202112051514859.png" alt="image-20211205151425693" /></p>
+<p>不！下期将介绍一个非常牛逼的工具，可以让你只要点击几下鼠标就能非常轻松完成反向代理，当然它自身也是基于Docker搭建的 ^ ^</p>
+<p>所以暂时先憋着，丑就丑一点，我们下期视频来处理这个事情。</p>
+<h2 id="7%E3%80%81%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE" tabindex="-1">7、备份数据</h2>
+<p>参考这篇：<a href="https://blog.laoda.de/archives/backup-docker" target="_blank">如何备份Docker数据？（以Bitwarden为例）</a></p>
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://diss.one/upgrading-cyberpanel/">
+              <h3 class="post-title">
+                Upgrading CyberPanel
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://diss.one" target="_blank"> 表酱紫 </a>
+  <a class="rss" href="https://diss.one/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
